@@ -45,10 +45,22 @@ $: if($provider) {
 </script>
 
 <div>
-	<div class="bg-white rounded-2xl max-w-md py-8 px-6 m-auto">
-		{#if $provider}
-			<p class="text-center">{resultMessage}</p>
-		{/if}
+	<div class="bg-white rounded-2xl py-8 px-6 m-auto">
+		<button
+		role="button"
+		type="submit"
+		disabled={isSubmittedOnce}
+		class="w-full px-4 py-3 rounded-lg bg-gray hover:bg-gray-light text-sm text-white"><span>Поделиться своей историей</span></button
+	>
+
+		<div class="w-full px-4 py-3 mt-4 mb-4 rounded-lg border bg-white text-sm text-black font-thin">
+			<span><b>Павел</b> <span>6.09.2021</span></span>
+			<p class="mt-3 mb-3 mr-5">Сервис должен быть простым, интуитивно понятным; кросс-платформенным; обладать удобными инструментами для продвижения публикаций в социальных медиа; лента должна обновляться в режиме</p>
+			<div class="mt-6 x-4 py-1 w-20 rounded border border-blue text-xs text-blue text-center">
+				<p>Поделиться</p>
+			</div>
+		</div>
+
 		<form on:submit|preventDefault={submitStory}>
 				<div class="mt-6">
 					{#each parts as part}
@@ -72,11 +84,13 @@ $: if($provider) {
 							role="button"
 							type="submit"
 							disabled={isSubmittedOnce}
-							class="px-4 py-2 rounded-lg bg-black text-sm text-white hover:bg-white hover:text-black hover:border hover:border-black"><span>Отправить</span></button
+							class="px-4 py-2 rounded-lg bg-green text-sm text-white hover:bg-green-light "><span>Отправить</span></button
 						>
 					</div>
 				</div>
 		</form>
+
+		
 	</div>
 </div>
 
