@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+
 	// Design & idea credit: www.vercel.com/docs 🙏
 	import { page } from '$app/stores'
 	import { provider } from '../stores/room'
