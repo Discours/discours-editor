@@ -1,6 +1,7 @@
 <script>
 import { onMount } from "svelte"
 import SvelteTable from "svelte-table"
+import { ydoc } from '../stores/room'
 
 let rows = []
 const columns = [
@@ -13,6 +14,7 @@ const columns = [
 let statusMessage = ''
 
 onMount(async () => {
+    /*
     const response = await fetch('/api/room', {
         method: 'post',
         body: JSON.stringify({ room: window.location.hostname })
@@ -23,7 +25,10 @@ onMount(async () => {
     } else {
         statusMessage = 'Что-то пошло не так :(.';
     }
+    */
+   rows = $ydoc.getArray('stories').toArray()
+
 })
   </script>
-  <p>{statusMessage}</p>
+  <p>{rows}</p>
   <SvelteTable {columns} {rows} />

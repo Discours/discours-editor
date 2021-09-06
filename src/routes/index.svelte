@@ -3,6 +3,7 @@ import StoryWidget from '../components/StoryWidget.svelte'
 
 import { ydoc, swarm } from '../stores/room'
 
+let show = false
 </script>
 
 <style>
@@ -29,6 +30,9 @@ body {
     margin: 20px 0;
 }
 
+.hidden {
+    display: none
+}
 </style>
 
 <div class="page">
@@ -36,6 +40,12 @@ body {
         <h2 w-60>Давайте соберём истории на удивительную тему</h2>
         <p>У вас было такое в жизни? Вы или ваши близкие сталкивались с этим? Вы много об этом знаете? Расскажите свою историю.</p>
     </div>
-
-    <StoryWidget />
+    <button
+		role="button"
+		type="submit"
+        on:click={() => {show = true}}
+		class:hidden={show}
+		class="w-full px-4 py-3 rounded-lg bg-gray hover:bg-gray-light text-sm text-white"><span>Поделиться своей историей</span></button
+	>
+    {#if show}<StoryWidget />{/if}
 </div>
