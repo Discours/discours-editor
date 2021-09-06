@@ -1,16 +1,22 @@
 <script lang="ts">
-
 	// Design & idea credit: www.vercel.com/docs 🙏
 	import { page } from '$app/stores'
 	import { provider, ydoc } from '../stores/room'
 	import { onMount } from 'svelte'
 
-	let note = ''
+	const parts = [
+		"Хотите вискарика?",
+		"Как вы относитесь к Кромвелю?",
+		"У вас есть хомячок?"
+	]
+
+	let notes: {[key: string]: string } = {}
 	let resultMessage = ''
 	let isSubmittedOnce = false
 
-	const submitFeedback = async () => {
-		isSubmittedOnce = true;
+	const submitStory = async () => {
+		isSubmittedOnce = true
+		const note = Object.values(notes).join("\n")
 		const response = await fetch('/api/create', {
 			method: 'post',
 			body: JSON.stringify({
@@ -24,13 +30,13 @@
 			resultMessage = 'Что-то пошло не так :(.';
 		}
 		setTimeout(() => {
-			note = '';
+			notes = {}
 			resultMessage = ''
 		}, 5000);
 	}
 
 onMount(() => {
-	note = $ydoc.getText('raw').toString()
+	const ytext = $ydoc.getText('raw').toString()
 })
 
 $: if($provider) {
@@ -43,22 +49,24 @@ $: if($provider) {
 		{#if $provider}
 			<p class="text-center">{resultMessage}</p>
 		{/if}
-		<form on:submit|preventDefault={submitFeedback}>
+		<form on:submit|preventDefault={submitStory}>
 				<div class="mt-6">
-					<div class="w-full">
-						<textarea
-							bind:value={note}
-							id="note"
-							width="100%"
-							placeholder="Ваша история"
-							aria-label="Ваша история"
-							autocapitalize="off"
-							autocomplete="off"
-							autocorrect="off"
-							type="text"
-							class="w-full p-2 rounded-lg border border-gray-300 resize-none"
-						/>
-					</div>
+					{#each parts as part}
+						<div class="w-full">
+							<textarea
+								bind:value={notes[part]}
+								placeholder={part}
+								id="note"
+								width="100%"
+								aria-label="Ваша история"
+								autocapitalize="off"
+								autocomplete="off"
+								autocorrect="off"
+								type="text"
+								class="w-full p-2 rounded-lg border border-gray-300 resize-none"
+							/>
+						</div>
+					{/each}
 					<div class="flex justify-end">
 						<button
 							role="button"

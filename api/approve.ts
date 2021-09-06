@@ -4,23 +4,18 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 const q = faunadb.query
 const client = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET })
 
-interface MyStory {
-  note: string
-  url: string
-  from?: string
-}
-
 export default async (request: VercelRequest, response: VercelResponse) => {
-  const story = JSON.parse(request.body) as MyStory
+  const { message, signature } = JSON.parse(request.body)
 
   try {
       await client.query(
-        q.Create(q.Collection('stories'), {
-          data: {
-            ...story,
-            approved: false
-          }
-        })
+        q.Update(
+            q.Ref(q.Collection('stories'), message), 
+            {
+                data: {
+                    approved: signature === process.env.SIGNATURE
+                }
+            })
       )
     response.status(201).end()
   } catch (error) {
