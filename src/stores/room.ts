@@ -1,4 +1,4 @@
-import { writable, derived, Writable } from 'svelte/store'
+import { writable, derived } from 'svelte/store'
 import type { WebrtcProvider } from 'y-webrtc'
 import * as Y from 'yjs'
 
@@ -13,4 +13,4 @@ export const connectivity = {
 
 export const swarm = writable(DEFAULT_ROOM)
 export const ydoc = writable(new Y.Doc())
-export const provider: Writable<WebrtcProvider> = writable()
+export const provider = writable()
