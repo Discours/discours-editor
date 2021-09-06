@@ -8,8 +8,8 @@ import { WebrtcProvider } from 'y-webrtc'
 import { IndexeddbPersistence } from 'y-indexeddb'
 
 onMount(() => {
-
     $provider = new WebrtcProvider($swarm, $ydoc, connectivity as any)
+    $provider.connect()
 })
 </script>
 <slot></slot>

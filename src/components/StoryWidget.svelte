@@ -2,10 +2,11 @@
 
 	// Design & idea credit: www.vercel.com/docs 🙏
 	import { page } from '$app/stores'
-	import { provider } from '../stores/room'
+	import { provider, ydoc } from '../stores/room'
+	import { onMount } from 'svelte'
 
 	let note = ''
-	let resultMessage
+	let resultMessage = ''
 	let isSubmittedOnce = false
 
 	const submitFeedback = async () => {
@@ -18,21 +19,29 @@
 			})
 		});
 		if (response.status === 201) {
-			resultMessage = 'Thanks for your feedback, we appreciate it.';
+			resultMessage = 'Благодарим за участие, мы очень ценим это.';
 		} else {
-			resultMessage = 'Oh no, something went wrong :(.';
+			resultMessage = 'Что-то пошло не так :(.';
 		}
 		setTimeout(() => {
 			note = '';
-			resultMessage = '';
+			resultMessage = ''
 		}, 5000);
-	};
+	}
+
+onMount(() => {
+	note = $ydoc.getText('raw').toString()
+})
+
+$: if($provider) {
+	resultMessage = $provider.roomName
+}
 </script>
 
 <div>
 	<div class="bg-white rounded-2xl max-w-md py-8 px-6 m-auto">
 		{#if $provider}
-			<p class="text-center">{$provider && $provider.roomName}</p>
+			<p class="text-center">{resultMessage}</p>
 		{/if}
 		<form on:submit|preventDefault={submitFeedback}>
 				<div class="mt-6">
