@@ -13,7 +13,7 @@ const columns = [
 let statusMessage = ''
 
 onMount(async () => {
-    const response = await fetch('/api/create', {
+    const response = await fetch('/api/room', {
         method: 'post',
         body: JSON.stringify({ room: window.location.hostname })
     })

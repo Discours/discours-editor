@@ -13,6 +13,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
             q.Ref(q.Collection('stories'), message), 
             {
                 data: {
+                    ...message,
                     approved: signature === process.env.SIGNATURE
                 }
             })

@@ -6,3 +6,4 @@ node_modules
 .vercel
 pnpm*
 .pnpm*
+.vercel_build_output
