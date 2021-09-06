@@ -1,8 +1,8 @@
 <script>
 	// Design & idea credit: www.vercel.com/docs 🙏
 	import { page } from '$app/stores'
-	import { connected, connection } from '../stores/network'
-
+	import { provider } from '../stores/room'
+	
 	let note = ''
 	let resultMessage
 	let isSubmittedOnce = false
@@ -30,8 +30,8 @@
 
 <div>
 	<div class="bg-white rounded-2xl max-w-md py-8 px-6 m-auto">
-		{#if $connected}
-			<p class="text-center">{console.log($connection)}</p>
+		{#if $provider}
+			<p class="text-center">{console.log($provider)}</p>
 		{:else}
 			<form on:submit|preventDefault={submitFeedback}>
 					<div class="mt-6">
