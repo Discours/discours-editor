@@ -1,4 +1,4 @@
-import { writable, derived } from 'svelte/store'
+import { writable, derived, Writable } from 'svelte/store'
 import type { WebrtcProvider } from 'y-webrtc'
 import * as Y from 'yjs'
 
