@@ -3,7 +3,8 @@
 	import { page } from '$app/stores'
 	import type { MyStory } from '../stores/room'
 	import { provider, ydoc, stories } from '../stores/room'
-	import { onMount } from 'svelte'
+	import { onMount, SvelteComponent } from 'svelte'
+	import Stories from '../components/Stories.svelte'
 
 	let binded = false
 	let isSubmittedOnce = false
@@ -12,6 +13,7 @@
 		"Какое самое яркое воспоминание или озарение вы бы хотели увезти из Выборга?",
 		"Какое послание из Выборга вы бы отправили себе в будущее?"
 	]
+	let elements = {}
 
 $: if($provider && !binded) {
 	
@@ -31,7 +33,10 @@ $: if($provider && !binded) {
 
 	const submitStory = async () => {
 		isSubmittedOnce = true
-		const note = Object.values(notes).join("\n")
+		let note = ""
+		Object.values(notes).forEach(n => {
+			note += '<p>' + n + '</p>'
+		})
 		// Create a Y.Array in the Y.Doc
 		$stories = $ydoc.getArray('stories')
 		console.debug($provider)
@@ -40,7 +45,7 @@ $: if($provider && !binded) {
 			url: $page.host + $page.path,
 			// from: $provider.
 		}
-		$stories.push([s])
+		$stories.insert($stories.length, [s])
 		/*
 		const response = await fetch('/api/create', {
 			method: 'post',
@@ -59,6 +64,7 @@ $: if($provider && !binded) {
 			resultMessage = ''
 		}, 5000)
 		*/
+		Object.values(elements).forEach((el: any) => el.value = '')
 	}
 
 onMount(() => {
@@ -73,19 +79,14 @@ $: if($provider) {
 <div>
 	<div class="bg-white rounded-2xl py-8 px-6 m-auto">
 
-		<div class="w-full px-4 py-3 mt-4 mb-4 rounded-lg border bg-white text-sm text-black font-thin">
-			<span><b>Павел</b> <span>6.09.2021</span></span>
-			<p class="mt-3 mb-3 mr-5">Сервис должен быть простым, интуитивно понятным; кросс-платформенным; обладать удобными инструментами для продвижения публикаций в социальных медиа; лента должна обновляться в режиме</p>
-			<div class="mt-6 x-4 py-1 w-20 rounded border border-blue text-xs text-blue text-center">
-				<p>Поделиться</p>
-			</div>
-		</div>
+		<Stories />
 
 		<form on:submit|preventDefault={submitStory}>
 				<div class="mt-6">
 					{#each parts as part}
 						<div class="w-full">
 							<textarea
+								bind:this={elements[part]}
 								bind:value={notes[part]}
 								placeholder={part}
 								id="note"

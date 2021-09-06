@@ -11,7 +11,7 @@ export interface MyStory {
     signature?: string
 }
 
-const DEFAULT_ROOM = 'discours/widget'
+const DEFAULT_ROOM = 'discours.io/widget'
 export const connectivity = {
     maxConn: 33,
     signaling: [
