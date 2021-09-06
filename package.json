@@ -20,9 +20,11 @@
 		"postcss-load-config": "^3.1.0",
 		"prettier": "~2.2.1",
 		"prettier-plugin-svelte": "^2.4.0",
+		"svelt-yjs": "^1.1.0",
 		"svelte": "^3.42.4",
 		"svelte-check": "^2.2.5",
 		"svelte-preprocess": "^4.9.1",
+		"svelte-table": "^0.1.18",
 		"tailwindcss": "^2.2.9",
 		"tslib": "^2.3.1",
 		"typescript": "^4.4.2",
@@ -32,7 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"google-spreadsheet": "^3.1.15",
-		"faunadb": "^4.4.1"
+		"faunadb": "^4.4.1",
+		"google-spreadsheet": "^3.1.15"
 	}
 }

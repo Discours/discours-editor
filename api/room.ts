@@ -17,7 +17,7 @@ export default async (request: VercelRequest, res: VercelResponse) => {
     const query: any = await client.query(allRefs.data.map((ref) => q.Get(ref)))
     res.json(query.map((res) => res.data))
   } catch (error) {
-    console.error(error);
-    res.status(500).end();
+    console.error(error)
+    res.status(500).end()
   }
 }

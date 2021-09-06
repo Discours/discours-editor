@@ -1,14 +1,41 @@
 <script lang="ts">
-	import FeedbackWidget from '$lib/feedback-widget.svelte';
+import StoryWidget from '../components/StoryWidget.svelte'
+
+import { ydoc, swarm } from '../stores/room'
+
 </script>
 
-<div class="mt-8 max-w-lg mx-auto text-center">
-	<h1 class="my-4 text-4xl">Svelte Feedback Widget</h1>
-	<p class="my-4">If you want to learn what your website visitors think, ask them 😉.</p>
-	<p class="my-4">
-		To learn more about this widget, its architecture and how to get started, please see th <a
-			href="https://github.com/mikenikles/svelte-feedback-widget" class="underline"><code>README.md</code></a
-		> file.
-	</p>
-  <FeedbackWidget />
+<style>
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+}
+
+.page {
+    max-width: 600px;
+    margin: auto;
+}
+
+.page h2 {
+    max-width: 60%;
+    margin: 25px 0;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 26px;
+}
+
+.page p {
+    margin: 20px 0;
+}
+
+</style>
+
+<div class="page">
+    <div>
+        <h2 w-60>Давайте соберём истории на удивительную тему</h2>
+        <p>У вас было такое в жизни? Вы или ваши близкие сталкивались с этим? Вы много об этом знаете? Расскажите свою историю.</p>
+    </div>
+
+    <StoryWidget />
 </div>
