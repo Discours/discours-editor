@@ -8,19 +8,17 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   const { message, signature } = JSON.parse(request.body)
 
   try {
-      await client.query(
-        q.Update(
-            q.Ref(q.Collection('stories'), message), 
-            {
-                data: {
-                    ...message,
-                    approved: signature === process.env.SIGNATURE
-                }
-            })
-      )
+    await client.query(
+      q.Update(q.Ref(q.Collection('stories'), message), {
+        data: {
+          ...message,
+          approved: signature === process.env.SIGNATURE,
+        },
+      })
+    )
     response.status(201).end()
   } catch (error) {
-    console.error(error);
+    console.error(error)
     response.status(500).end()
   }
 }

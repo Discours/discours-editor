@@ -14,17 +14,17 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   const story = JSON.parse(request.body) as MyStory
 
   try {
-      await client.query(
-        q.Create(q.Collection('stories'), {
-          data: {
-            ...story,
-            approved: false
-          }
-        })
-      )
+    await client.query(
+      q.Create(q.Collection('stories'), {
+        data: {
+          ...story,
+          approved: false,
+        },
+      })
+    )
     response.status(201).end()
   } catch (error) {
-    console.error(error);
+    console.error(error)
     response.status(500).end()
   }
 }

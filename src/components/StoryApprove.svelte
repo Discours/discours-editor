@@ -1,19 +1,14 @@
 <script>
-import { onMount } from "svelte"
-import SvelteTable from "svelte-table"
-import { ydoc } from '../stores/room'
+  import { onMount } from 'svelte'
+  import SvelteTable from 'svelte-table'
+  import { ydoc } from '../stores/room'
 
-let rows = []
-const columns = [
-    "note",
-    "url",
-    "from",
-    "approved"
-]
+  let rows = []
+  const columns = ['note', 'url', 'from', 'approved']
 
-let statusMessage = ''
+  let statusMessage = ''
 
-onMount(async () => {
+  onMount(async () => {
     /*
     const response = await fetch('/api/room', {
         method: 'post',
@@ -26,9 +21,9 @@ onMount(async () => {
         statusMessage = 'Что-то пошло не так :(.';
     }
     */
-   rows = $ydoc.getArray('stories').toArray()
+    rows = $ydoc.getArray('stories').toArray()
+  })
+</script>
 
-})
-  </script>
-  <p>{rows}</p>
-  <SvelteTable {columns} {rows} />
+<p>{rows}</p>
+<SvelteTable {columns} {rows} />

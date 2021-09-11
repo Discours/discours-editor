@@ -9,7 +9,9 @@ export default async (request: VercelRequest, res: VercelResponse) => {
   const room = JSON.parse(request.body)
 
   try {
-    const allRefs: any = await client.query(q.Paginate(q.Match(q.Index('get_by_room'), room)))
+    const allRefs: any = await client.query(
+      q.Paginate(q.Match(q.Index('get_by_room'), room))
+    )
     if (allRefs.data.length === 0) {
       console.log('NO RECORDS')
       return []

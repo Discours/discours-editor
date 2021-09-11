@@ -1,31 +1,31 @@
-import preprocess from 'svelte-preprocess';
-import vercel from '@sveltejs/adapter-vercel';
+// eslint-disable @typescript-eslint/explicit-module-boundary-types
+import { typescript } from 'svelte-preprocess-esbuild'
+import vercel from '@sveltejs/adapter-vercel'
+import node from '@sveltejs/adapter-node'
+import ssr from '@sveltejs/adapter-static'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const { postcss, globalStyle } = require('svelte-preprocess')
+const postcssOptions = require('./postcss.config.cjs')
+const nodeAdapter = { adapt: async () => await node() }
+const adapter = process.env.VERCEL ? vercel() : (process.env.SSR ? ssr() : nodeAdapter)
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://github.com/sveltejs/svelte-preprocess
-	// for more information about preprocessors
-	preprocess: [preprocess({
-		"postcss": true
-	})],
+  preprocess: [
+    typescript(),
+    postcss(postcssOptions, { name: 'postcss' }),
+    globalStyle(),
+  ],
+  kit: {
+    adapter,
+    target: '#discoursio-widget',
+  },
+}
 
-	kit: {
-		adapter: vercel(),
-		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#discoursio-widget',
-		vite: {
-			server: {
-				hmr: {
-					clientPort: process.env.HMR_HOST ? 443 : 24678,
-					host: process.env.HMR_HOST ? process.env.HMR_HOST.substring("https://".length) : "localhost"
-				}
-			}
-		}
-	}
-};
-
-export default config;
+export default config
 // Workaround until SvelteKit uses Vite 2.3.8 (and it's confirmed to fix the Tailwind JIT problem)
-const mode = process.env.NODE_ENV;
-const dev = mode === "development";
-process.env.TAILWIND_MODE = dev ? "watch" : "build";
+const mode = process.env.NODE_ENV
+const dev = mode === 'development'
+process.env.TAILWIND_MODE = dev ? 'watch' : 'build'
