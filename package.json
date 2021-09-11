@@ -14,7 +14,7 @@
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^4.0.3",
     "@sveltejs/adapter-node": "^1.0.0-next.46",
-    "@sveltejs/adapter-static": "^1.0.0-next.0",
+    "@sveltejs/adapter-static": "^1.0.0-next.18",
     "@sveltejs/adapter-vercel": "^1.0.0-next.28",
     "@sveltejs/kit": "next",
     "@vercel/node": "^1.12.1",
