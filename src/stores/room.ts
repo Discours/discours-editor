@@ -20,7 +20,7 @@ export const connectivity = {
   ],
 }
 
-export const swarm = writable(DEFAULT_ROOM)
+export const room = writable(DEFAULT_ROOM)
 export const ydoc = writable(new Y.Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
 export const db: Writable<IndexeddbPersistence> = writable()

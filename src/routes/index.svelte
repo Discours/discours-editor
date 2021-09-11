@@ -1,7 +1,7 @@
 <script lang="ts">
   import StoryWidget from '../components/StoryWidget.svelte'
 
-  import { ydoc, swarm } from '../stores/room'
+  // import { ydoc, room } from '../stores/room'
 
   let show = false
 </script>
