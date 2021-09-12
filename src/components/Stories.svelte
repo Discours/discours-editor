@@ -20,10 +20,10 @@
       class="w-full px-4 py-3 mt-4 mb-4 rounded-lg border bg-white text-sm text-black font-thin"
     >
       <span
-        ><b>{story.sign || 'аноним'}</b>
-        <span>{story.timestamp || 'сегодня'}</span></span
+        ><b>{story.sign || _('аноним')}</b>
+        <span>{story.timestamp || _('недавно')}</span></span
       >
-      {#each story.parts as note}<p class="mt-3 mb-3 mr-5">{note}</p>{/each}
+      {#each story.notes as note}<p class="mt-3 mb-3 mr-5">{note}</p>{/each}
       <div
         class="mt-6 x-4 py-1 w-20 rounded border border-blue text-xs text-blue text-center"
       >

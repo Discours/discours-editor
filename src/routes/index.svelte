@@ -4,7 +4,9 @@ import { ydoc, room, p2p } from '../stores/room'
 import _ from '../utils/localize'
 
 let show = false
+
 </script>
+
 {#if false}<slot></slot>{/if}
 <div class="page">
   <div>
@@ -14,13 +16,12 @@ let show = false
   <button
     role="button"
     type="submit"
-    on:click={() => {
-      show = true
-    }}
+    on:click={() => show = true}
     class:hidden={show}
     class="w-full px-4 py-3 rounded-lg bg-gray hover:bg-gray-light text-sm text-white"
-    ><span>{_('Поделиться своей историей')}</span></button
-  >
+    >
+    <span>{_('Поделиться своей историей')}</span>
+  </button>
   {#if show}<StoryWidget />{/if}
 </div>
 

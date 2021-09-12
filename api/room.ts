@@ -5,15 +5,12 @@ const q = faunadb.query
 const client = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET })
 
 export default async (request: VercelRequest, res: VercelResponse) => {
-  console.log('Loading data...')
-  const room = JSON.parse(request.body)
-
+  const room: string = JSON.parse(request.body)
+  console.debug('getting room: ' + room)
   try {
-    const allRefs: any = await client.query(
-      q.Paginate(q.Match(q.Index('get_by_room'), room))
-    )
+    const allRefs: any = await client.query( q.Paginate(q.Collection(room)) )
     if (allRefs.data.length === 0) {
-      console.log('NO RECORDS')
+      console.log('room space is empty')
       return []
     }
     const query: any = await client.query(allRefs.data.map((ref) => q.Get(ref)))

@@ -5,12 +5,12 @@
   import { p2p, ydoc, room } from '../stores/room'
   import Stories from '../components/Stories.svelte'
   import StoryApprove from '../components/StoryApprove.svelte'
+import { onMount } from 'svelte';
 
   export let quiz: string[] = ["Ваша подпись"]
 
   let binded = false
   let isSubmittedOnce = false
-  let elements = {}
   let approveMode = false
 
   $: if ($p2p && !binded) {
@@ -25,12 +25,13 @@
   }
 
   let answers: { [key: string]: string } = {}
+  let elements = []
 
   const submitStory = async () => {
     isSubmittedOnce = true
     // Create a Y.Array in the Y.Doc
     $stories = $ydoc.getArray('stories')
-    console.debug($p2p)
+    
     const s: MyStory = {
       notes: Object.values(answers),
       room: $room,
@@ -38,6 +39,10 @@
     $stories.insert($stories.length, [s])
     Object.values(elements).forEach((el: any) => (el.value = ''))
   }
+
+  onMount(() => {
+    elements[0].focus()
+  })
 </script>
 
 <div>
@@ -46,15 +51,15 @@
     {#if approveMode}<StoryApprove />{:else}<Stories />{/if}
     <form on:submit|preventDefault={submitStory}>
       <div class="mt-6">
-        {#each quiz as p}
+        {#each quiz as p, i}
           <div class="w-full">
             <textarea
-              bind:this={elements[p]}
+              bind:this={elements[i]}
               bind:value={answers[p]}
-              placeholder={p}
-              id="note"
+              placeholder={_(p)}
+              id={"note-" + i.toString()}
               width="100%"
-              aria-label="Ваша история"
+              aria-label={_("Ваша история")}
               autocapitalize="off"
               autocomplete="off"
               autocorrect="off"
