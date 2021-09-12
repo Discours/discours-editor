@@ -1,9 +1,37 @@
 import { writable, derived } from 'svelte/store'
-import { page } from '$app/stores'
 import type { Writable, Readable } from 'svelte/store'
 import type { WebrtcProvider } from 'y-webrtc'
-import * as Y from 'yjs'
+import { Doc } from 'yjs'
+import { Awareness } from 'y-protocols/awareness.js'
 
-export const room: Readable<string> = derived([page], ([$page]) => $page.host + $page.path)
-export const ydoc = writable(new Y.Doc())
+export const room: Writable<string> = writable('discours.io/widget')
+export const ydoc = writable(new Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
+
+interface WebrtcOptions {
+  signaling: string[]
+  password: string | null
+  awareness: Awareness
+  maxConns: number
+  filterBcConns: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  peerOpts: any
+}
+
+export const signaling = [
+  // 'wss://signaling.discours.io',
+  // 'wss://stun.l.google.com:19302',
+  'wss://y-webrtc-signaling-eu.herokuapp.com',
+  'wss://signaling.yjs.dev',
+]
+
+export const webrtc: Readable<WebrtcOptions> = derived([ydoc], ([$ydoc]) => {
+  return {
+    awareness: new Awareness($ydoc),
+    password: null,
+    filterBcConns: true,
+    maxConns: 33,
+    signaling,
+    peerOpts: {},
+  }
+})

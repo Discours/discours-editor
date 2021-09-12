@@ -1,45 +1,55 @@
 {
   "name": "is-discours-widget",
   "description": "Immersive stories",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
+    "dev": "cross-env NODE_ENV='development' node esbuild.config.js",
+    "build": "cross-env NODE_ENV='production' node esbuild.config.js",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. .",
-    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
+    "fix": "eslint --fix src/**/*"
+  },
+  "engines": {
+    "pnpm": "^6"
+  },
+  "dependencies": {
+    "@vercel/node": "^1.12.1",
+    "faunadb": "^4.4.1"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^4.0.3",
-    "@sveltejs/adapter-node": "^1.0.0-next.46",
-    "@sveltejs/adapter-static": "^1.0.0-next.18",
-    "@sveltejs/adapter-vercel": "^1.0.0-next.28",
-    "@sveltejs/kit": "next",
-    "@vercel/node": "^1.12.1",
+    "@tsconfig/svelte": "^2.0.1",
+    "@types/node": "^16.9.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
     "autoprefixer": "^10.3.4",
+    "cross-env": "^7.0.3",
     "cssnano": "^5.0.8",
+    "derver": "^0.4.19",
+    "dotenv": "^10.0.0",
+    "esbuild": "^0.12.26",
+    "esbuild-svelte": "^0.5.4",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-svelte3": "^3.2.1",
     "postcss": "^8.3.6",
-    "postcss-load-config": "^3.1.0",
     "prettier": "^2.4.0",
     "prettier-plugin-svelte": "^2.4.0",
-    "svelt-yjs": "^1.1.0",
     "svelte": "^3.42.5",
-    "svelte-check": "^2.2.5",
+    "svelte-check": "^2.2.6",
     "svelte-preprocess": "^4.9.4",
+    "svelte-preprocess-esbuild": "^2.0.0",
     "svelte-table": "^0.1.18",
+    "svelte2tsx": "^0.4.6",
     "tailwindcss": "^2.2.15",
     "tslib": "^2.3.1",
     "typescript": "^4.4.3",
     "y-indexeddb": "^9.0.6",
+    "y-protocols": "^1.0.5",
     "y-webrtc": "^10.2.0",
     "yjs": "^13.5.12"
   },
-  "type": "module",
-  "dependencies": {
-    "faunadb": "^4.4.1",
-    "google-spreadsheet": "^3.1.15",
-    "svelte-preprocess-esbuild": "^2.0.0"
-  }
+  "type": "module"
 }

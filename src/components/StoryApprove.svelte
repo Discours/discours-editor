@@ -1,15 +1,14 @@
 <script>
-  import { onMount } from 'svelte'
   import SvelteTable from 'svelte-table'
   import { ydoc } from '../stores/room'
 
   let rows = []
-  const columns = ['note', 'url', 'from', 'approved']
+  const columns = [ 'room', 'ts', 'notes', 'from', 'sign', 'saved']
 
-  let statusMessage = ''
-
-$: rows = $ydoc.getArray('stories').toArray()
-
+  $: if($ydoc) {
+    rows = $ydoc.getArray('stories').toArray()
+    console.debug(rows)
+  }
 </script>
 
 <p>{rows}</p>

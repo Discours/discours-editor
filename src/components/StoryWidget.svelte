@@ -5,12 +5,11 @@
   import { p2p, ydoc, room } from '../stores/room'
   import Stories from '../components/Stories.svelte'
   import StoryApprove from '../components/StoryApprove.svelte'
-import { onMount } from 'svelte';
+  import { onMount } from 'svelte'
 
-  export let quiz: string[] = ["Ваша подпись"]
+  export let quiz: string[] = ['Ваша подпись']
 
   let binded = false
-  let isSubmittedOnce = false
   let approveMode = false
 
   $: if ($p2p && !binded) {
@@ -28,16 +27,21 @@ import { onMount } from 'svelte';
   let elements = []
 
   const submitStory = async () => {
-    isSubmittedOnce = true
     // Create a Y.Array in the Y.Doc
     $stories = $ydoc.getArray('stories')
-    
+
     const s: MyStory = {
       notes: Object.values(answers),
       room: $room,
+      from: $p2p.room.peerId,
+      ts: (new Date()).toJSON().slice(0, 19).replace('T', ' ')
     }
+    s.sign = s.notes.pop()
     $stories.insert($stories.length, [s])
-    Object.values(elements).forEach((el: any) => (el.value = ''))
+    Object.values(elements).forEach(
+      (el: HTMLTextAreaElement) => (el.value = '')
+    )
+    
   }
 
   onMount(() => {
@@ -57,9 +61,9 @@ import { onMount } from 'svelte';
               bind:this={elements[i]}
               bind:value={answers[p]}
               placeholder={_(p)}
-              id={"note-" + i.toString()}
+              id={'note-' + i.toString()}
               width="100%"
-              aria-label={_("Ваша история")}
+              aria-label={_('Ваша история')}
               autocapitalize="off"
               autocomplete="off"
               autocorrect="off"
@@ -72,7 +76,6 @@ import { onMount } from 'svelte';
           <button
             role="button"
             type="submit"
-            disabled={isSubmittedOnce}
             class="px-4 py-2 rounded-lg bg-green text-sm text-white hover:bg-green-light "
             ><span>{_('Отправить')}</span></button
           >

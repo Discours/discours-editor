@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import type { MyStory } from '../src/stores/story'
 import faunadb from 'faunadb'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
