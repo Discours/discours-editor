@@ -12,14 +12,6 @@ export interface MyStory {
 }
 
 const DEFAULT_ROOM = 'discours.io/widget'
-export const connectivity = {
-  maxConn: 33,
-  signaling: [
-    // 'wss://signaling.discours.io',
-    'wss://y-webrtc-signaling-eu.herokuapp.com',
-  ],
-}
-
 export const room = writable(DEFAULT_ROOM)
 export const ydoc = writable(new Y.Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
