@@ -1,14 +1,17 @@
 <script lang="ts">
-  // Design & idea credit: www.vercel.com/docs 🙏
-  import { page } from '$app/stores'
-  import type { MyStory } from '../stores/room'
-  import { p2p, ydoc, stories } from '../stores/room'
+  import _ from '../utils/localize'
+  import type { MyStory } from '../stores/story'
+  import { stories } from '../stores/user'
+  import { p2p, ydoc, room } from '../stores/room'
   import Stories from '../components/Stories.svelte'
+  import StoryApprove from '../components/StoryApprove.svelte'
+
+  export let quiz: string[] = ["Ваша подпись"]
 
   let binded = false
   let isSubmittedOnce = false
-  const parts = ['Для меня эти два дня это...', 'Как вас зовут?']
   let elements = {}
+  let approveMode = false
 
   $: if ($p2p && !binded) {
     $p2p.on('synced', (synced) => {
@@ -21,7 +24,7 @@
     binded = true
   }
 
-  let notes: { [key: string]: string } = {}
+  let answers: { [key: string]: string } = {}
 
   const submitStory = async () => {
     isSubmittedOnce = true
@@ -29,8 +32,8 @@
     $stories = $ydoc.getArray('stories')
     console.debug($p2p)
     const s: MyStory = {
-      parts: Object.values(notes),
-      url: $page.host + $page.path,
+      notes: Object.values(answers),
+      room: $room,
     }
     $stories.insert($stories.length, [s])
     Object.values(elements).forEach((el: any) => (el.value = ''))
@@ -39,16 +42,16 @@
 
 <div>
   <div class="bg-white rounded-2xl py-8 px-6 m-auto">
-    <Stories />
     {#if $p2p}<p>{$p2p.roomName}</p>{/if}
+    {#if approveMode}<StoryApprove />{:else}<Stories />{/if}
     <form on:submit|preventDefault={submitStory}>
       <div class="mt-6">
-        {#each parts as part}
+        {#each quiz as p}
           <div class="w-full">
             <textarea
-              bind:this={elements[part]}
-              bind:value={notes[part]}
-              placeholder={part}
+              bind:this={elements[p]}
+              bind:value={answers[p]}
+              placeholder={p}
               id="note"
               width="100%"
               aria-label="Ваша история"
@@ -66,7 +69,7 @@
             type="submit"
             disabled={isSubmittedOnce}
             class="px-4 py-2 rounded-lg bg-green text-sm text-white hover:bg-green-light "
-            ><span>Отправить</span></button
+            ><span>{_('Отправить')}</span></button
           >
         </div>
       </div>

@@ -1,15 +1,15 @@
 <script lang="ts">
-  import StoryWidget from '../components/StoryWidget.svelte'
+import StoryWidget from '../components/StoryWidget.svelte'
+import { ydoc, room, p2p } from '../stores/room'
+import _ from '../utils/localize'
 
-  // import { ydoc, room } from '../stores/room'
-
-  let show = false
+let show = false
 </script>
-
+{#if false}<slot></slot>{/if}
 <div class="page">
   <div>
-    <h2 w-60>Голоса хакатона: слово за вами</h2>
-    <p>Какое самое яркое воспоминание вы увезёте с собой из Выборга?✨</p>
+    <h2 w-60>{$ydoc.getText($room)}</h2>
+    <p>{$ydoc.getText($room + ':subtitle')}</p>
   </div>
   <button
     role="button"
@@ -19,7 +19,7 @@
     }}
     class:hidden={show}
     class="w-full px-4 py-3 rounded-lg bg-gray hover:bg-gray-light text-sm text-white"
-    ><span>Поделиться своей историей</span></button
+    ><span>{_('Поделиться своей историей')}</span></button
   >
   {#if show}<StoryWidget />{/if}
 </div>
