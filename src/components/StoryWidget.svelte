@@ -1,5 +1,6 @@
 <script lang="ts">
   import _ from '../utils/localize'
+  import * as Y from 'yjs'
   import type { MyStory } from '../stores/story'
   import { stories } from '../stores/user'
   import { p2p, ydoc, room } from '../stores/room'
@@ -7,7 +8,9 @@
   import StoryApprove from '../components/StoryApprove.svelte'
   import { onMount } from 'svelte'
 
-  export let quiz: string[] = ['Ваша подпись']
+  const defaultOne = ['Ваша подпись']
+
+  export let quiz: string[] = defaultOne
 
   let binded = false
   let approveMode = false
@@ -26,21 +29,39 @@
   let answers: { [key: string]: string } = {}
   let elements = []
 
-  const submitStory = async () => {
-    // Create a Y.Array in the Y.Doc
-    $stories = $ydoc.getArray('stories')
+  const reset = () => {
+    answers = {}
+    elements = []
+    quiz = defaultOne
+  }
 
-    const s: MyStory = {
-      notes: Object.values(answers),
-      room: $room,
-      from: $p2p.room.peerId,
-      ts: (new Date()).toJSON().slice(0, 19).replace('T', ' ')
-    }
-    s.sign = s.notes.pop()
-    $stories.insert($stories.length, [s])
-    Object.values(elements).forEach(
-      (el: HTMLTextAreaElement) => (el.value = '')
-    )
+  const submitStory = async () => {
+    console.log('submitting a story')
+    try {
+      $stories = $ydoc.getArray('stories')
+      let notes = Object.values(answers)
+      const sign = notes.pop()
+
+      const s: MyStory = {
+        notes,
+        sign,
+        room: $room,
+        from: $p2p.room.peerId,
+        ts: (new Date()).toJSON().slice(0, 19).replace('T', ' ')
+      }
+
+      console.debug(s)
+
+      if(s.sign && s.sign.length > 2) {
+        $stories.insert($stories.length, [s])
+        Object.values(elements).forEach(
+          (el: HTMLTextAreaElement) => (el.value = '')
+        )
+      }
+      reset()
+      return
+    } catch(e) { console.error(e) }
+    
     
   }
 
@@ -53,7 +74,7 @@
   <div class="bg-white rounded-2xl py-8 px-6 m-auto">
     {#if $p2p}<p>{$p2p.roomName}</p>{/if}
     {#if approveMode}<StoryApprove />{:else}<Stories />{/if}
-    <form on:submit|preventDefault={submitStory}>
+    <form on:submit|preventDefault={() => submitStory()}>
       <div class="mt-6">
         {#each quiz as p, i}
           <div class="w-full">

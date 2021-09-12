@@ -21,6 +21,7 @@
     $db = new IndexeddbPersistence($room, $ydoc)
     $p2p.connect()
     $db.on('synced', syncedHandler)
+    show = false
   })
 
   let show = false

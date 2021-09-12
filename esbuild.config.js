@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { build } from 'esbuild'
 import svelte from 'esbuild-svelte'
+import cssModules from 'esbuild-css-modules-plugin'
 import { derver } from 'derver'
 import svelteCfg from './svelte.config.js'
 
@@ -19,6 +20,7 @@ const options = {
   outfile: dir + `/bundle.js`,
   platform: 'browser',
   plugins: [
+    cssModules({ inject: false }),
     svelte({
       compileOptions: {
         dev,
