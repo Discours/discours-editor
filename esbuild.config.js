@@ -13,12 +13,15 @@ const port = 5000
 const dir = 'public'
 
 const options = {
+  globalName: 'immersive',
+  format: 'iife',
+  platform: 'browser',
+  minifyIdentifiers: true,
   entryPoints: [`src/main.ts`],
   bundle: true,
   color: true,
   incremental: dev,
   outfile: dir + `/bundle.js`,
-  platform: 'browser',
   plugins: [
     cssModules({ inject: false }),
     svelte({

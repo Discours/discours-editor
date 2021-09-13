@@ -3,11 +3,15 @@
   import { ydoc } from '../stores/room'
 
   let rows = []
-  const columns = [ 'room', 'ts', 'notes', 'from', 'sign', 'saved']
+  let columns = []
 
   $: if($ydoc) {
     rows = $ydoc.getArray('stories').toArray()
-    console.debug(rows)
+    if(rows[0]) {
+      columns = Object.keys(rows[0])
+      columns.push('saved')
+      console.debug(columns)
+    }
   }
 </script>
 

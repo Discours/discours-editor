@@ -4,11 +4,15 @@ import { lang } from '../stores/user'
 
 const ru2en = {
   'Поделиться своей историей': 'Share your storу',
-  'Подписать обращение': 'Sign the petition',
+  'Подписать': 'Sign',
+  'Подпись': 'Sign',
+  'Подписать петицию': 'Sign the petition',
   Поделиться: 'Share',
   Отправить: 'Send',
   недавно: 'recently',
   аноним: 'anonymous',
+  'Имя': 'Name',
+  'ФИО': 'Full Name',
   'Ваше имя': 'Your name',
   'Ваша подпись': 'Your sign',
   'Ваше мнение': 'Your opinion',
@@ -16,4 +20,4 @@ const ru2en = {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-export default (s: string): string => (get(lang) === 'en' && ru2en[s]) || s
+export default (s: string): string => get(lang) === 'en' && ru2en[s] || s

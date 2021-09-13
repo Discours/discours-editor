@@ -1,6 +1,17 @@
 const config = {
   mode: 'jit',
-  purge: ['./public/**/*.html', './src/**/*.{html,js,svelte,ts}'],
+  purge: {
+    enabled: true,
+    content: [
+      "./**/*.ts",
+      "./*.ts",
+      "./**/*.js",
+      "./*.js",
+      "./**/*.svelte",
+      "./*.svelte",
+      "./public/index.html"
+    ],
+  },
   theme: {
     extend: {
       colors: {

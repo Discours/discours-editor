@@ -12,9 +12,13 @@ export default {
     postcss(
       {
         plugins: [
+          require('postcss-import')(),
           require('tailwindcss')(require('./tailwind.config.cjs')),
           require('autoprefixer')(),
-          require('cssnano')({ preset: 'default' }),
+          require('@fullhuman/postcss-purgecss')({
+            content: ['./**/*.html', './**/*.svelte'],
+            defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || []
+          })
         ],
       },
       { name: 'postcss' }
