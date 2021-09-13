@@ -4,6 +4,7 @@
   import StoryInput from './components/StoryInput.svelte'
   import StoryPreview from './components/StoryPreview.svelte'
   import StoryApprove from './components/StoryApprove.svelte'
+  import StoryFormGenerator from './components/StoryFormGenerator.svelte'
   import { ydoc, room, p2p, webrtc } from './stores/room'
   import { lang, db, auth, stories, loading } from './stores/user'
   import { quiz, call } from './stores/story'
@@ -51,37 +52,43 @@
     $db.on('synced', syncedHandler)
     showPreview = false
   })
+let generatorMode = false
 </script>
 
-<div class="page">
-  <header>
-    <h2 w-60>{$ydoc.getText($room)}</h2>
-    <p>{$ydoc.getText($room + ':subtitle')}</p>
-    {#if $p2p}<small>{$p2p.roomName}</small>{/if}
-  </header>
-  {#if !$loading}
-    <main>
-      <StoryPreview />
-    </main>
+{#if generatorMode}
+  <StoryFormGenerator />
+{:else}
+  <Tailwind />
+  <div class="page">
+    <a href="#generator" on:click|preventDefault={()=>generatorMode=true}>{_('Генератор виджета')}</a>
+    <header>
+      <h2 w-60>{$ydoc.getText($room)}</h2>
+      <p>{$ydoc.getText($room + ':subtitle')}</p>
+      {#if $p2p}<small>{$p2p.roomName}</small>{/if}
+    </header>
+    {#if !$loading}
+      <main>
+        <StoryPreview />
+      </main>
 
-    <footer>
-      {#if showPreview}
-        <StoryInput />
-      {:else}
-        <button
-          role="button"
-          type="submit"
-          on:click={() => (showPreview = true)}
-          class:disabled={showPreview}
-          class="w-half px-4 py-3 text-sm border border-gray-300"
-        >
-          <span>{_($call)}</span>
-        </button>
-      {/if}
-    </footer>
-  {/if}
-</div>
-<Tailwind />
+      <footer>
+        {#if showPreview}
+          <StoryInput />
+        {:else}
+          <button
+            role="button"
+            type="submit"
+            on:click={() => (showPreview = true)}
+            class:disabled={showPreview}
+            class="w-half px-4 py-3 text-sm border border-gray-300"
+          >
+            <span>{_($call)}</span>
+          </button>
+        {/if}
+      </footer>
+    {/if}
+  </div>
+{/if}
 
 <style>
   :global(body) {
