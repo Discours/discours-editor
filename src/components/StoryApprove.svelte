@@ -5,9 +5,9 @@
   let rows = []
   let columns = []
 
-  $: if($ydoc) {
+  $: if ($ydoc) {
     rows = $ydoc.getArray('stories').toArray()
-    if(rows[0]) {
+    if (rows[0]) {
       columns = Object.keys(rows[0])
       columns.push('saved')
       console.debug(columns)

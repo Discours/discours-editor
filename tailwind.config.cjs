@@ -3,13 +3,13 @@ const config = {
   purge: {
     enabled: true,
     content: [
-      "./**/*.ts",
-      "./*.ts",
-      "./**/*.js",
-      "./*.js",
-      "./**/*.svelte",
-      "./*.svelte",
-      "./public/index.html"
+      './**/*.ts',
+      './*.ts',
+      './**/*.js',
+      './*.js',
+      './**/*.svelte',
+      './*.svelte',
+      './public/index.html',
     ],
   },
   theme: {

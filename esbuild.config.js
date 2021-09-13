@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { build } from 'esbuild'
 import svelte from 'esbuild-svelte'
-import cssModules from 'esbuild-css-modules-plugin'
 import { derver } from 'derver'
 import svelteCfg from './svelte.config.js'
 
@@ -19,11 +18,13 @@ const options = {
   minifyIdentifiers: true,
   entryPoints: [`src/main.ts`],
   bundle: true,
+  splitting: false,
+  write: true,
+  allowOverwrite: true,
   color: true,
   incremental: dev,
   outfile: dir + `/bundle.js`,
   plugins: [
-    cssModules({ inject: false }),
     svelte({
       compileOptions: {
         dev,
@@ -32,7 +33,7 @@ const options = {
       },
       preprocess,
     }),
-  ]
+  ],
 }
 
 if (!dev) {

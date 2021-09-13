@@ -1,7 +1,7 @@
 <script lang="ts">
   import _ from '../utils/localize'
   import { ydoc } from '../stores/room'
-  import { quiz } from '../stores/story'
+  // import { quiz } from '../stores/story'
   import { stories } from '../stores/user'
   import StoryShare from './StoryShare.svelte'
 
@@ -21,17 +21,21 @@
 
 <div>
   {#each sss as story, i}
-    <div class="px-4 py-3 border border-gray-300 bg-white text-sm text-black story">
+    <div
+      class="px-4 py-3 border border-gray-300 bg-white text-sm text-black story"
+    >
       <span>
         <b class="border p-1">{story.sign || _('аноним')}</b>
-        <span class="text-xs">{ story && story.ts || _('недавно')}</span>
+        <span class="text-xs">{(story && story.ts) || _('недавно')}</span>
       </span>
       <span class="righter fadebtn">
-        <a href={''} on:click|preventDefault={() => removeStory(story)}> [x] </a>
+        <a href={''} on:click|preventDefault={() => removeStory(story)}>
+          [x]
+        </a>
       </span>
       {#if story.notes.length > 1}
         {#each story.notes as note}<p class="mt-3 mb-3 mr-5">{note}</p>{/each}
-        <StoryShare {story} anchor={'#note-' + i.toString()}/>
+        <StoryShare {story} anchor={'#note-' + i.toString()} />
       {/if}
     </div>
   {/each}
@@ -45,7 +49,7 @@
     transition: opacity 0.6s ease-out;
     opacity: 0;
   }
- .story:hover .fadebtn {
+  .story:hover .fadebtn {
     opacity: 1;
   }
 </style>

@@ -16,16 +16,16 @@
   export let fields
   export let callToAction
 
-  $: if(fields || callToAction) {
-      $quiz = fields
-      $call = callToAction
+  $: if (fields || callToAction) {
+    $quiz = fields
+    $call = callToAction
   }
 
   let showPreview = false
-  
+
   const update = () => {
     const up = $ydoc.getArray('stories')
-    if($stories !== up && up.length > 0) {
+    if ($stories !== up && up.length > 0) {
       $stories = up
       console.log($stories.toArray().length.toString() + ' stories updated')
     }
@@ -39,9 +39,11 @@
   }
 
   onMount(() => {
-    $lang = window.navigator.languages.indexOf('ru')!=-1 ? 'ru' : 'en'
+    $lang = window.navigator.languages.indexOf('ru') != -1 ? 'ru' : 'en'
     console.log('language is ' + $lang)
-    $room = window.location.hostname + (window.location.pathname === '/' ? '' : window.location.pathname)
+    $room =
+      window.location.hostname +
+      (window.location.pathname === '/' ? '' : window.location.pathname)
     $auth = document.cookie
     $p2p = new WebrtcProvider($room, $ydoc, $webrtc)
     $db = new IndexeddbPersistence($room, $ydoc)
@@ -52,42 +54,43 @@
 </script>
 
 <div class="page">
-
   <header>
     <h2 w-60>{$ydoc.getText($room)}</h2>
     <p>{$ydoc.getText($room + ':subtitle')}</p>
     {#if $p2p}<small>{$p2p.roomName}</small>{/if}
   </header>
   {#if !$loading}
-  <main>
-    <StoryPreview />
-  </main>
+    <main>
+      <StoryPreview />
+    </main>
 
-  <footer>
-    {#if showPreview}
-      <StoryInput />
-    {:else}
-      <button
-        role="button"
-        type="submit"
-        on:click={() => (showPreview = true)}
-        class:disabled={showPreview}
-        class="w-half px-4 py-3 text-sm border border-gray-300"
-      >
-        <span>{_($call)}</span>
-      </button>
-    {/if}
-  </footer>
+    <footer>
+      {#if showPreview}
+        <StoryInput />
+      {:else}
+        <button
+          role="button"
+          type="submit"
+          on:click={() => (showPreview = true)}
+          class:disabled={showPreview}
+          class="w-half px-4 py-3 text-sm border border-gray-300"
+        >
+          <span>{_($call)}</span>
+        </button>
+      {/if}
+    </footer>
   {/if}
 </div>
 <Tailwind />
+
 <style>
   :global(body) {
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 16px;
   }
 
-  header, footer {
+  header,
+  footer {
     align-items: center;
     text-align: center;
   }
@@ -97,21 +100,24 @@
     outline-color: black;
   }
 
-  :global(a), :global(button) {
+  :global(a),
+  :global(button) {
     font-weight: 200;
     color: black !important;
     background-color: white;
     transition: all 0.4s ease;
   }
 
-  :global(a:active), :global(button:active) {
+  :global(a:active),
+  :global(button:active) {
     background-color: black;
     border: 1px solid black;
     color: white !important;
   }
 
   :global(button.disabled) {
-    padding: 0; margin: 0;
+    padding: 0;
+    margin: 0;
     border: none !important;
     pointer-events: none;
     height: 0px !important;
