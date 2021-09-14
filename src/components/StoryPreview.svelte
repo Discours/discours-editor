@@ -22,10 +22,10 @@
 <div>
   {#each sss as story, i}
     <div
-      class="px-4 py-3 border border-gray-300 bg-white text-sm text-black story"
+      class="px-4 py-3 text-sm text-black story"
     >
       <span>
-        <b class="border p-1">{story.sign || _('аноним')}</b>
+        <b class="border rounded p-1">{story.sign || _('аноним')}</b>
         <span class="text-xs">{(story && story.ts) || _('недавно')}</span>
       </span>
       <span class="righter fadebtn">

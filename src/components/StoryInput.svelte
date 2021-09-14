@@ -20,6 +20,7 @@
 
   const reset = () => {
     answers = []
+    buttonEnabled = false
     elements.forEach((el: HTMLTextAreaElement) => (el.value = ''))
   }
 
@@ -78,7 +79,7 @@
               autocomplete="off"
               autocorrect="off"
               type="text"
-              class="w-9/12 py-2 pl-2 left-0 border border-gray-300 resize-none"
+              class="w-full py-2 pl-2 left-0 border border-gray-300 resize-none"
               class:pr-22={i === $quiz.length - 1}
             />
           </div>
@@ -91,9 +92,9 @@
       style={'top:' + lastTop + 'px; height: ' + lastHeight + 'px;'}
       class:showed={buttonEnabled}
       on:click|preventDefault={submitStory}
-      class="absolute px-4 py-2 text-sm bottom-0 h-16 right-0 inbtn "
+      class="border border-gray-300 rounded p-4 text-xl right-0 inbtn"
     >
-      {'> ' + _('Отправить')}
+      {_('Отправить')}
     </button>
   </div>
 </div>
@@ -104,7 +105,7 @@
     border: none;
     transition: all 0.7s ease;
     top: 9.4rem;
-    opacity: 0;
+    opacity: 0 !important;
   }
   .showed {
     opacity: 1 !important;

@@ -10,6 +10,7 @@
   import { quiz, call } from './stores/story'
   import { onMount } from 'svelte'
   import _ from './utils/localize'
+  import * as Y from 'yjs'
   import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'
   import Tailwind from './tw.svelte'
@@ -24,71 +25,79 @@
 
   let showPreview = false
 
-  const update = () => {
+  const synced = () => {
     const up = $ydoc.getArray('stories')
     if ($stories !== up && up.length > 0) {
       $stories = up
       console.log($stories.toArray().length.toString() + ' stories updated')
     }
+    $loading = false
   }
 
-  const syncedHandler = () => {
-    console.log('local database is synced')
-    // console.debug($db.doc.getArray('stories').toJSON())
-    update()
-    $loading = false
+  const docUpdate = (update) => {
+    console.log('updating doc')
+    console.debug(Array.from($ydoc.getArray('stories').toArray()))
+
+    Y.logUpdate(update)
+    // console.debug(Array.from($ydoc.getArray('stories').toArray()))
   }
 
   onMount(() => {
     $lang = window.navigator.languages.indexOf('ru') != -1 ? 'ru' : 'en'
     console.log('language is ' + $lang)
-    $room =
-      window.location.hostname +
-      (window.location.pathname === '/' ? '' : window.location.pathname)
+    const subpath = window.location.pathname.length === 1 ? '' : window.location.pathname
+    $room = window.location.hostname + subpath
     $auth = document.cookie
     $p2p = new WebrtcProvider($room, $ydoc, $webrtc)
     $db = new IndexeddbPersistence($room, $ydoc)
     $p2p.connect()
-    $db.on('synced', syncedHandler)
+    $db.on('synced', synced)
     showPreview = false
+    $p2p.doc.on('update', docUpdate)
   })
-let generatorMode = false
+  let generatorMode = false
+  let approveMode = false
 </script>
 
-{#if generatorMode}
-  <StoryFormGenerator />
-{:else}
-  <Tailwind />
-  <div class="page">
-    <a href="#generator" on:click|preventDefault={()=>generatorMode=true}>{_('Генератор виджета')}</a>
-    <header>
-      <h2 w-60>{$ydoc.getText($room)}</h2>
-      <p>{$ydoc.getText($room + ':subtitle')}</p>
-      {#if $p2p}<small>{$p2p.roomName}</small>{/if}
-    </header>
-    {#if !$loading}
-      <main>
-        <StoryPreview />
-      </main>
+<Tailwind />
 
-      <footer>
-        {#if showPreview}
-          <StoryInput />
-        {:else}
-          <button
-            role="button"
-            type="submit"
-            on:click={() => (showPreview = true)}
-            class:disabled={showPreview}
-            class="w-half px-4 py-3 text-sm border border-gray-300"
-          >
-            <span>{_($call)}</span>
-          </button>
-        {/if}
-      </footer>
-    {/if}
-  </div>
-{/if}
+<div class="page">
+
+  <header>
+    <h2 w-60>{$ydoc.getText($room)}</h2>
+    <p>{$ydoc.getText($room + ':subtitle')}</p>
+    {#if $p2p}<small>{$p2p.roomName}</small>{/if}
+    <a href="#generator" on:click|preventDefault={() => (generatorMode = !generatorMode)}
+      >{'🤖'}</a
+    >
+    <a href="#approve" on:click|preventDefault={() => (approveMode = !approveMode)}
+      >{'✍🏻'}</a
+    >
+  </header>
+  {#if !$loading}
+    <main>
+      {#if approveMode}<StoryApprove />{/if}
+      {#if generatorMode}<StoryFormGenerator />{/if}
+      <StoryPreview />
+    </main>
+
+    <footer>
+      {#if showPreview}
+        <StoryInput />
+      {:else}
+        <button
+          role="button"
+          type="submit"
+          on:click={() => (showPreview = true)}
+          class:disabled={showPreview}
+          class="w-half px-4 py-3 text-sm"
+        >
+          <span>{_($call)}</span>
+        </button>
+      {/if}
+    </footer>
+  {/if}
+</div>
 
 <style>
   :global(body) {
@@ -99,7 +108,7 @@ let generatorMode = false
   header,
   footer {
     align-items: center;
-    text-align: center;
+    text-align: right;
   }
 
   :global(textarea:focus-visible) {
