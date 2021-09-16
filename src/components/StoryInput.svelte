@@ -26,7 +26,7 @@
 
   const submitStory = () => {
     $loading = true
-    console.debug(answers)
+    // console.debug(answers)
     try {
       $stories = $ydoc.getArray('stories')
       const sign = answers.pop()
@@ -35,7 +35,7 @@
         notes: answers,
         sign,
         room: $room,
-        peer: $p2p.room.peerId,
+        // peer: $p2p.room.peerId,
         ts: new Date().toJSON().slice(0, 19).replace('T', ' '),
       }
 

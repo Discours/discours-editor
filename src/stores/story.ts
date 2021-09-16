@@ -5,7 +5,7 @@ export interface MyStory {
   notes: string[]
   room: string
   ts?: string
-  peer?: string
+  // peer?: string
   sign?: string
   shared?: boolean
 }

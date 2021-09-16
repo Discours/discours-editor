@@ -17,20 +17,24 @@
       sss = $stories.toArray()
     }
   }
+  const saveStory = async (story) => {
+    console.log('saving a story')
+  }
 </script>
 
 <div>
   {#each sss as story, i}
-    <div
-      class="px-4 py-3 text-sm text-black story"
-    >
+    <div class="px-4 py-3 text-sm text-black story">
       <span>
         <b class="border rounded p-1">{story.sign || _('аноним')}</b>
         <span class="text-xs">{(story && story.ts) || _('недавно')}</span>
       </span>
-      <span class="righter fadebtn">
+      <span class="fadebtn">
+        <a href={''} on:click|preventDefault={() => saveStory(story)}>
+          {'💚'}
+        </a>
         <a href={''} on:click|preventDefault={() => removeStory(story)}>
-          [x]
+          {'❌'}
         </a>
       </span>
       {#if story.notes.length > 1}

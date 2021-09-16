@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { build } from 'esbuild'
 import svelte from 'esbuild-svelte'
 import { derver } from 'derver'
-import svelteCfg from './svelte.config.js'
+import { typescript } from 'svelte-preprocess-esbuild'
+import { createRequire } from 'module'
 
-const { preprocess } = svelteCfg
-const dev = process.env.NODE_ENV == 'development'
+const require = createRequire(import.meta.url)
+const { windi: windiSvelte } = require('svelte-windicss-preprocess')
+const dev = process.env.NODE_ENV != 'production'
 const port = 5000
 const dir = 'public'
 
@@ -31,7 +31,18 @@ const options = {
         css: true,
         generate: 'dom',
       },
-      preprocess,
+      preprocess: [
+        windiSvelte({
+          compile: false,
+          config: 'tailwind.config.cjs',
+          debug: true,
+          globalPreflight: true, // will be deprecated soon
+          globalUtility: true,
+          //prefix: 'windi-',
+          silent: false,
+        }),
+        typescript(),
+      ],
     }),
   ],
 }

@@ -16,7 +16,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    // "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    // 'plugin:@typescript-eslint/recommended-requiring-type-checking'
   ],
   plugins: ['svelte3', '@typescript-eslint', 'prettier'],
   overrides: [

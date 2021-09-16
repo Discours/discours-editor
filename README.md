@@ -1,8 +1,7 @@
 # immersive-stories
 
-Options:
+Widget will read the `window.immersive` field to have these props:
 
-- - **fields**: an array of strings, the parts of quiz
-- - **callToAction**: a string, the label on the button
-
-TODO: tailwind proper connection
+- - **password**: a random string, generated on-demand to be the first in the
+    room
+- - **caption**: a string, the caption on the button

@@ -23,15 +23,19 @@ export const signaling = [
   // 'wss://stun.l.google.com:19302',
   'wss://y-webrtc-signaling-eu.herokuapp.com',
   'wss://signaling.yjs.dev',
+  'wss://tracker.openwebtorrent.com',
 ]
-
-export const webrtc: Readable<WebrtcOptions> = derived([ydoc], ([$ydoc]) => {
-  return {
-    awareness: new Awareness($ydoc),
-    password: null,
-    filterBcConns: true,
-    maxConns: 33,
-    signaling,
-    peerOpts: {},
+export const roompass: Writable<string> = writable('')
+export const webrtc: Readable<WebrtcOptions> = derived(
+  [ydoc, roompass],
+  ([$ydoc, $roompass]) => {
+    return {
+      awareness: new Awareness($ydoc),
+      password: $roompass,
+      filterBcConns: true,
+      maxConns: 33,
+      signaling,
+      peerOpts: {},
+    }
   }
-})
+)
