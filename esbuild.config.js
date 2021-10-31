@@ -2,11 +2,11 @@
 import { build } from 'esbuild'
 import svelte from 'esbuild-svelte'
 import { derver } from 'derver'
-import { typescript } from 'svelte-preprocess-esbuild'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
-const { windi: windiSvelte } = require('svelte-windicss-preprocess')
+const { preprocess } = require('./svelte.config.cjs')
+
 const dev = process.env.NODE_ENV != 'production'
 const port = 5000
 const dir = 'public'
@@ -31,18 +31,7 @@ const options = {
         css: true,
         generate: 'dom',
       },
-      preprocess: [
-        windiSvelte({
-          compile: false,
-          config: 'tailwind.config.cjs',
-          debug: true,
-          globalPreflight: true, // will be deprecated soon
-          globalUtility: true,
-          //prefix: 'windi-',
-          silent: false,
-        }),
-        typescript(),
-      ],
+      preprocess,
     }),
   ],
 }
