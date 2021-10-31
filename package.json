@@ -1,7 +1,7 @@
 {
-  "name": "is-discours-widget",
-  "description": "Immersive stories",
-  "version": "0.0.2",
+  "name": "discours-editor-widget",
+  "description": "Discours.io editor widget",
+  "version": "0.0.1",
   "scripts": {
     "dev": "node esbuild.config.js",
     "build": "cross-env NODE_ENV='production' node esbuild.config.js",
