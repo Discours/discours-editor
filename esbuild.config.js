@@ -5,18 +5,20 @@ import { derver } from 'derver'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
+const fs = require('fs')
 const { preprocess } = require('./svelte.config.cjs')
 
 const dev = process.env.NODE_ENV != 'production'
+if(dev) console.info('[dev mode]')
 const port = 5000
 const dir = 'public'
 
 const options = {
-  globalName: 'immersive',
+  globalName: 'discours',
   format: 'iife',
   platform: 'browser',
   minifyIdentifiers: true,
-  entryPoints: [`src/main.ts`],
+  entryPoints: [`src/index.ts`],
   bundle: true,
   splitting: false,
   write: true,
@@ -33,7 +35,7 @@ const options = {
       },
       preprocess,
     }),
-  ],
+  ]
 }
 
 if (!dev) {
@@ -64,6 +66,8 @@ build(options)
         },
       })
     } else {
+      const stats = fs.statSync(options.outfile)
+      console.log(`bunbdle size: ${Math.round(stats.size/100)/10} Kb`)
       console.log('esbuild: successfully built for production')
       process.exit(0)
     }
