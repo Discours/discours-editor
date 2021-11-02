@@ -35,5 +35,5 @@ export const createRichTextEditor = (html = '', plugins) => {
     })
 }
 
-export * from './serialize.js'
-export * from './transform.js'
+export * from './serialize'
+export * from './transform'

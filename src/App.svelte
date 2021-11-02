@@ -31,7 +31,10 @@
   import { p2p, ydoc } from './store/p2p'
   import { onMount } from 'svelte'
 
-  export let placeholder = 'Напишите что-нибудь'
+  export let props = {
+    placeholder: 'Напишите что-нибудь',
+    body: '',
+  }
 
   onMount(async () => {
     const data = $ydoc.getArray('data')
@@ -45,6 +48,7 @@
       yUndoPlugin(),
       keymap({ 'Mod-z': undo, 'Mod-y': redo, 'Mod-Shift-z': redo }),
     ]
+    $body = props.body
     $editorState = createRichTextEditor(mit.parse($body, {}), plugins)
   })
 </script>
@@ -52,7 +56,7 @@
 <section class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-md">
   <P2P password={$roompass} />
   <ProsemirrorEditor
-    {placeholder}
+    placeholder={props.placeholder}
     body={$body}
     editorState={$editorState}
     on:change={(ev) => ($editorState = ev.detail.editorState)}
