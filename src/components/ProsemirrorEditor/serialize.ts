@@ -45,7 +45,7 @@ export const toPlainText = (editorState) => {
   } else if (editorState.doc.childCount === 1) {
     return editorState.doc.textContent
   } else {
-    let paragraphs = []
+    const paragraphs = []
     for (let i = 0; i < editorState.doc.childCount; i++) {
       paragraphs.push(editorState.doc.child(i).textContent)
     }

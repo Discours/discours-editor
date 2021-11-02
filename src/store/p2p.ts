@@ -11,36 +11,36 @@ export const ydoc = writable(new Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
 
 interface WebrtcOptions {
-    signaling: string[]
-    awareness: Awareness
-    maxConns: number
-    filterBcConns: boolean
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    peerOpts: any,
-    password: string
+  signaling: string[]
+  awareness: Awareness
+  maxConns: number
+  filterBcConns: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  peerOpts: any
+  password: string
 }
 
 export const signaling = [
-    // 'wss://signaling.discours.io',
-    // 'wss://stun.l.google.com:19302',
-    'wss://y-webrtc-signaling-eu.herokuapp.com',
-    'wss://signaling.yjs.dev',
-    'wss://tracker.openwebtorrent.com',
+  // 'wss://signaling.discours.io',
+  // 'wss://stun.l.google.com:19302',
+  'wss://y-webrtc-signaling-eu.herokuapp.com',
+  'wss://signaling.yjs.dev',
+  'wss://tracker.openwebtorrent.com',
 ]
 export const roompass: Writable<string> = writable('')
 export const webrtc: Readable<WebrtcOptions> = derived(
-        [ydoc, roompass],
-        ([$ydoc, $roompass]): WebrtcOptions => {
-            return {
-                awareness: new Awareness($ydoc),
-                filterBcConns: true,
-                maxConns: 33,
-                signaling,
-                peerOpts: {},
-                password: $roompass || ''
-            }
-        }
-    )
+  [ydoc, roompass],
+  ([$ydoc, $roompass]): WebrtcOptions => {
+    return {
+      awareness: new Awareness($ydoc),
+      filterBcConns: true,
+      maxConns: 33,
+      signaling,
+      peerOpts: {},
+      password: $roompass || '',
+    }
+  }
+)
 export const data: Writable<Y.Array<unknown>> = writable(new Y.Array())
 export const db: Writable<IndexeddbPersistence> = writable()
 export const loading: Writable<boolean> = writable(false)

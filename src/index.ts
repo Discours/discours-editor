@@ -1,4 +1,7 @@
-import App from './App.svelte'
+import Editor from './Editor.svelte'
 
-const app = new App({ target: document.body, props: (window as any).discours })
-export default app
+const widget = new Editor({
+  target: document.body,
+  props: (window as any).discours,
+})
+export default widget
