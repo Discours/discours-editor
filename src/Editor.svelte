@@ -53,7 +53,7 @@
   })
 </script>
 
-<section class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-md">
+<div class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-md">
   <P2P password={$roompass} />
   <ProsemirrorEditor
     placeholder={props.placeholder}
@@ -62,22 +62,10 @@
     on:change={(ev) => ($editorState = ev.detail.editorState)}
     debounceChangeEventsInterval={500}
   />
-</section>
+</div>
 
 <style global>
-  body {
-    background-color: #fafafa;
-    color: rgba(38, 38, 38, 0.7);
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-
-  h1,
-  h2,
-  h3,
-  div,
-  span {
+  div {
     margin: 0;
     padding: 0;
   }

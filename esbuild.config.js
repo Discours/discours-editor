@@ -10,7 +10,7 @@ const dir = 'public'
 import('./svelte.config.cjs').then(svelteConfig => {
 
   const options = {
-    globalName: 'aho',
+    globalName: 'discours',
     format: 'iife',
     platform: 'browser',
     minifyIdentifiers: true,

@@ -24,8 +24,7 @@ export const signaling = [
   // 'wss://signaling.discours.io',
   // 'wss://stun.l.google.com:19302',
   'wss://y-webrtc-signaling-eu.herokuapp.com',
-  'wss://signaling.yjs.dev',
-  'wss://tracker.openwebtorrent.com',
+  'wss://signaling.yjs.dev'
 ]
 export const roompass: Writable<string> = writable('')
 export const webrtc: Readable<WebrtcOptions> = derived(
