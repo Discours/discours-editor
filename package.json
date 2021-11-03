@@ -1,11 +1,11 @@
 {
   "name": "discours-editor",
   "version": "0.0.2",
-  "main": "src/index.ts",
   "contributors": [
     "Tony Rewin <anton.rewin@gmail.com>"
   ],
   "license": "MIT",
+  "main": "public/bundle.js",
   "peerDependencies": {
     "svelte": "^3.29.7",
     "typescript": "^4.0.0"
