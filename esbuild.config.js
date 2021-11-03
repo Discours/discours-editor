@@ -14,7 +14,7 @@ import('./svelte.config.cjs').then(svelteConfig => {
     format: 'iife',
     platform: 'browser',
     minifyIdentifiers: true,
-    entryPoints: [`src/index.ts`],
+    entryPoints: [`src/Editor.svelte`],
     bundle: true,
     splitting: false,
     write: true,
