@@ -5,7 +5,8 @@
     "Tony Rewin <anton.rewin@gmail.com>"
   ],
   "license": "MIT",
-  "main": "public/bundle.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "peerDependencies": {
     "svelte": "^3.29.7",
     "typescript": "^4.0.0"

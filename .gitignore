@@ -5,4 +5,4 @@ node_modules
 pnpm*
 .pnpm*
 .vercel_build_output
-public/bundle.*
+dist/*.js
