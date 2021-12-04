@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte'
   import { fade } from 'svelte/transition'
+  import './editor.css'
   // import { history } from 'prosemirror-history'
   import { dropCursor } from 'prosemirror-dropcursor'
   import { gapCursor } from 'prosemirror-gapcursor'
@@ -24,7 +25,7 @@
 
   const yXmlFragment = ydoc.getXmlFragment('prosemirror')
 
-  let master: HTMLDivElement = undefined
+  let element: HTMLDivElement = undefined
   let view: EditorView = undefined
 
   onMount(() => {
@@ -42,88 +43,19 @@
       }),
     ].concat(exampleSetup({ schema }))
     const state = EditorState.create({ schema, plugins })
-    view = new EditorView(master, { state })
+    view = new EditorView(element, { state })
     view.focus()
+    document.querySelector('.ProseMirror-menubar').setAttribute('style', '')
   })
 
   onDestroy(() => view.destroy())
 </script>
 
-<div class="editor" transition:fade bind:this={master} />
+<div class="editor" transition:fade bind:this={element} />
 
-<style global>
-.ProseMirror {
-    position: relative;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    -webkit-font-variant-ligatures: none;
-    font-variant-ligatures: none;
-    outline: none;
-  }
-
-  .ProseMirror pre {
-    white-space: pre-wrap;
-  }
-
-  .ProseMirror li {
-    position: relative;
-  }
-
-  .ProseMirror-hideselection *::selection {
-    background: transparent;
-  }
-
-  .ProseMirror-hideselection *::-moz-selection {
-    background: transparent;
-  }
-
-  .ProseMirror-hideselection {
-    caret-color: transparent;
-  }
-
-  .ProseMirror-selectednode {
-    outline: 2px solid #8cf;
-  }
-
-  /* Make sure li selections wrap around markers */
-
-  li.ProseMirror-selectednode {
-    outline: none;
-  }
-
-  li.ProseMirror-selectednode:after {
-    content: '';
-    position: absolute;
-    left: -32px;
-    right: -2px;
-    top: -2px;
-    bottom: -2px;
-      border: 2px solid #8cf;
-      pointer-events: none;
-    }
-  
-    .ProseMirror .empty-node::before {
-      position: absolute;
-      color: #aaa;
-      cursor: text;
-    }
-  
-    .ProseMirror .empty-node:hover::before {
-      color: #777;
-    }
-  
-    .ProseMirror.editor_empty::before {
-      position: absolute;
-      content: attr(data-placeholder);
-      pointer-events: none;
-      color: var(--ui-color-placeholder);
-    }
-  div.editor {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      border: 1px lightgray solid;
-      border-radius: 3px;
+<style>
+  .editor {
+      justify-content: left;
+      align-items: left;
   }
 </style>
