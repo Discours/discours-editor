@@ -6,6 +6,7 @@ import type { Writable, Readable } from 'svelte/store'
 import { Doc } from 'yjs'
 import { Awareness } from 'y-protocols/awareness.js'
 
+export const body: Writable<string> = writable('')
 export const room: Writable<string> = writable('discours')
 export const ydoc = writable(new Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
@@ -24,7 +25,7 @@ export const signaling = [
   // 'wss://signaling.discours.io',
   // 'wss://stun.l.google.com:19302',
   'wss://y-webrtc-signaling-eu.herokuapp.com',
-  'wss://signaling.yjs.dev'
+  'wss://signaling.yjs.dev',
 ]
 export const roompass: Writable<string> = writable('')
 export const webrtc: Readable<WebrtcOptions> = derived(

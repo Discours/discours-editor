@@ -1,8 +1,7 @@
 .DS_Store
 node_modules
+/build
+/.svelte-kit
+/package
 .env
-.vercel
-pnpm*
-.pnpm*
-.vercel_build_output
-dist/*.js
+.env.*

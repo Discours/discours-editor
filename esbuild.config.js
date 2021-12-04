@@ -7,13 +7,12 @@ const dev = process.env.NODE_ENV != 'production'
 const port = 5000
 const dir = 'dist'
 
-import('./svelte.config.cjs').then(svelteConfig => {
-
+import('./svelte.config.cjs').then((svelteConfig) => {
   const options = {
     globalName: 'discours',
     format: 'iife',
     // minifyIdentifiers: true,
-    entryPoints: [ 'src/Editor.svelte' ],
+    entryPoints: [dev ? 'src/index.ts' : 'src/Editor.svelte'],
     bundle: true,
     splitting: false,
     write: true,
@@ -32,18 +31,26 @@ import('./svelte.config.cjs').then(svelteConfig => {
       }),
     ],
   }
-  
+
   if (!dev) {
     options.minify = true
     options.treeShaking = true
   }
-  
-  build({ ...options, outfile: dir + '/index.esm.js', format: 'esm' })
-    .then((b) => {
+
+  build({ ...options, outfile: dir + '/index.esm.js', format: 'esm' }).then(
+    (b) => {
       build(options)
         .then((builder) => {
-          console.log(`index.esm.js ${Math.round(fs.statSync(dir + '/index.esm.js').size/100)/10} Kb`)
-          console.log(`index.js ${Math.round(fs.statSync(dir + '/index.js').size/100)/10} Kb`)
+          console.log(
+            `index.esm.js ${
+              Math.round(fs.statSync(dir + '/index.esm.js').size / 100) / 10
+            } Kb`
+          )
+          console.log(
+            `index.js ${
+              Math.round(fs.statSync(dir + '/index.js').size / 100) / 10
+            } Kb`
+          )
           if (builder.warnings && builder.warnings.length) {
             builder.warnings.forEach((w) => console.warn(w))
             return
@@ -70,6 +77,6 @@ import('./svelte.config.cjs').then(svelteConfig => {
           console.error(err)
           process.exit(1)
         })
-    })
-  })
-  
+    }
+  )
+})
