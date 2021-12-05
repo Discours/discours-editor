@@ -35,7 +35,8 @@
     "typescript": "^4.4.3"
   },
   "type": "module",
-  "svelte": "index.svelte",
+  "svelte": "src/lib/index.svelte",
+  "module": "src/lib/index.svelte",
   "dependencies": {
     "markdown-it": "^12.2.0",
     "markdown-it-footnote": "^3.0.3",
