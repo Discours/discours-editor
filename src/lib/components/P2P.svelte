@@ -15,12 +15,14 @@
     }
     $loading = false
   }
+
   const p2pDocUpdate = (update) => {
     $loading = true
     console.log('p2p: updating the doc')
     Y.logUpdate(update)
     $loading = false
   }
+
   onMount(() => {
     // room name from window.location
     $room =

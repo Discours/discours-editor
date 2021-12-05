@@ -26,17 +26,16 @@ export const signaling = [
   'wss://y-webrtc-signaling-eu.herokuapp.com',
   'wss://signaling.yjs.dev',
 ]
-export const roompass: Writable<string> = writable('')
 export const webrtc: Readable<WebrtcOptions> = derived(
-  [ydoc, roompass],
-  ([$ydoc, $roompass]): WebrtcOptions => {
+  [ydoc],
+  ([$ydoc]): WebrtcOptions => {
     return {
       awareness: new Awareness($ydoc),
       filterBcConns: true,
       maxConns: 33,
       signaling,
       peerOpts: {},
-      password: $roompass || '',
+      password: '',
     }
   }
 )

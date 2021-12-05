@@ -16,6 +16,12 @@ export const router = false
   import { webrtc } from './store'
   import Editor from './components/Editor/view.svelte'
   import { p2p, ydoc, room, body } from './store'
+  import { onMount } from 'svelte'
+
+  onMount(() => {
+    if(window.location.hash && !$room) $room = window.location.hash
+    if($room && !window.location.hash) window.location.hash = $room
+  })
 
   $: if ($ydoc && $room) $body = $ydoc.getXmlFragment($room + '-body')
 </script>
