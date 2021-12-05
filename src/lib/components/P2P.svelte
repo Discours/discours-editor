@@ -1,14 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import {
-    db,
-    body,
-    loading,
-    ydoc,
-    room,
-    p2p,
-    webrtc
-  } from '../store'
+  import { db, body, loading, ydoc, room, p2p, webrtc } from '../store'
   import * as Y from 'yjs'
   import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'

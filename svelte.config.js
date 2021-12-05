@@ -10,10 +10,13 @@ const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
   preprocess: [typescript(), globalStyle()],
-  router: false,
+  compilerOptions: {
+    enableSourcemap: true,
+    cssHash: ({ hash, css}) => 's-' + hash(css)
+  },
   kit: {
     adapter: adapter(),
-
+    router: false,
     // hydrate the <div id="svelte"> element in src/app.html
     target: '#svelte',
   },
