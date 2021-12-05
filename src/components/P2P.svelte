@@ -2,31 +2,32 @@
   import { onMount } from 'svelte'
   import {
     db,
-    data,
+    body,
     loading,
     ydoc,
     room,
     p2p,
-    webrtc,
-    roompass,
+    webrtc
   } from '../store'
   import * as Y from 'yjs'
   import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'
+
   export let password: string
+
   const dbSynced = () => {
-    const up = $db.doc.getArray('data')
-    if ($data !== up && up.length > 0) {
-      $data = up
-      console.log($data.toArray().length.toString() + ' stories updated')
+    const up = $db.doc.getXmlFragment($room + '-body')
+    if ($body !== up && up.length > 0) {
+      $body = up
+      console.log('p2p: body updated')
     }
     $loading = false
   }
   const p2pDocUpdate = (update) => {
+    $loading = true
     console.log('p2p: updating the doc')
-    console.debug(Array.from($ydoc.getArray('data').toArray()))
     Y.logUpdate(update)
-    console.debug(Array.from($ydoc.getArray('data').toArray()))
+    $loading = false
   }
   onMount(() => {
     // room name from window.location
@@ -35,7 +36,7 @@
       (window.location.pathname.length === 1 ? '' : window.location.pathname)
     console.log('p2p: room is ' + $room)
     // check if there is a pre-configured password
-    if (password) $roompass = password
+    if (password) $webrtc.password = password
     // init p2p provider
     $p2p = new WebrtcProvider($room, $ydoc, $webrtc)
     console.log('p2p: webrtc provider initialized')
@@ -59,6 +60,8 @@
 
 <style>
   .room {
+    position: fixed;
+    bottom: 0;
     background-color: plum;
     color: white;
     text-shadow: 1px 1px rebeccapurple;

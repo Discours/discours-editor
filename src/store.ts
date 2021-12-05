@@ -6,7 +6,6 @@ import type { Writable, Readable } from 'svelte/store'
 import { Doc } from 'yjs'
 import { Awareness } from 'y-protocols/awareness.js'
 
-export const body: Writable<string> = writable('')
 export const room: Writable<string> = writable('discours')
 export const ydoc = writable(new Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
@@ -41,6 +40,6 @@ export const webrtc: Readable<WebrtcOptions> = derived(
     }
   }
 )
-export const data: Writable<Y.Array<unknown>> = writable(new Y.Array())
+export const body: Writable<Y.XmlFragment> = writable(new Y.XmlFragment())
 export const db: Writable<IndexeddbPersistence> = writable()
 export const loading: Writable<boolean> = writable(false)
