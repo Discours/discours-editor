@@ -7,7 +7,7 @@
   import { schema } from 'prosemirror-markdown'
   import { setup } from './setup'
   import { keymap } from 'prosemirror-keymap'
-  import type { Doc, XmlFragment } from 'yjs'
+  import type { XmlFragment } from 'yjs'
   import {
     ySyncPlugin,
     yCursorPlugin,
@@ -17,7 +17,6 @@
   } from 'y-prosemirror'
   import type { Awareness } from 'y-protocols/awareness'
 
-  export let ydoc: Doc = undefined
   export let awareness: Awareness = undefined
   export let body: XmlFragment
 
