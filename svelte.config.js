@@ -12,7 +12,7 @@ const config = {
   preprocess: [typescript(), globalStyle()],
   compilerOptions: {
     enableSourcemap: true,
-    cssHash: ({ hash, css}) => 's-' + hash(css)
+    cssHash: ({ hash, css }) => 'd' + hash(css)
   },
   kit: {
     adapter: adapter({ failback: 'index.html' }),

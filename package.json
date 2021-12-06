@@ -2,6 +2,8 @@
   "name": "discours-editor",
   "version": "0.0.3",
   "scripts": {
+    "dev:es": "node esbuild.js",
+    "build:es": "NODE_ENV='production' node esbuild.js",
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
     "package": "svelte-kit package",
@@ -21,6 +23,9 @@
     "@types/prosemirror-view": "^1.19.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
+    "derver": "^0.4.20",
+    "esbuild": "^0.13.15",
+    "esbuild-svelte": "^0.6.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-svelte3": "^3.2.1",
