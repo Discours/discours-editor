@@ -12,7 +12,7 @@
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/adapter-static": "next",
     "@sveltejs/kit": "next",
     "@types/markdown-it": "^12.2.3",
     "@types/prosemirror-keymap": "1.0.4",

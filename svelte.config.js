@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto'
+import adapter from '@sveltejs/adapter-static'
 import { typescript } from 'svelte-preprocess-esbuild'
 import { createRequire } from 'module'
 
@@ -15,10 +15,17 @@ const config = {
     cssHash: ({ hash, css}) => 's-' + hash(css)
   },
   kit: {
-    adapter: adapter(),
+    adapter: adapter({ failback: 'index.html' }),
+    prerender: {  enabled: false },
     router: false,
+    ssr: false,
     // hydrate the <div id="svelte"> element in src/app.html
     target: '#svelte',
+    vite: {
+      build: {
+        chunkSizeWarningLimit: 777
+      }
+    }
   },
   skipIntroByDefault: true,
   experimental: {
