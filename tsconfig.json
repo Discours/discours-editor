@@ -1,23 +1,22 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "es2020",
-    "lib": ["es2020", "DOM"],
-    "target": "es2020",
-    "importsNotUsedAsValues": "error",
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["vite/client", "@types/jest", "@types/node", "./test/types"],
+    "allowJs": false,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "allowJs": true,
-    "checkJs": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
     "paths": {
-      "$lib": ["src/lib"],
-      "$lib/*": ["src/lib/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"]
+  "include": ["./src", "./test"]
 }

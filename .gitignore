@@ -1,9 +1,8 @@
-.DS_Store
 node_modules
-/build
-/.svelte-kit
-/package
-.env
-.env.*
 dist
+.idea
+gen
+*.log
+.idea
 .vercel
+.oldgit

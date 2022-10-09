@@ -1,0 +1,6 @@
+[0.0.1] initial
+
+[+] playwright e2e testing
+[+] tinywrite codebase annexy
+[+] capacitor
+[~] newnode

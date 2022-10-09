@@ -1,0 +1,6 @@
+{
+	"appId": "io.discours.app",
+	"appName": "discoursio",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
