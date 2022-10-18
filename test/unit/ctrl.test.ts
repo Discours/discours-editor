@@ -1,8 +1,8 @@
 import {vi, expect, test} from 'vitest'
 import {EditorState} from 'prosemirror-state'
 import {schema} from 'prosemirror-markdown'
-import {createCtrl} from '../../src/store/ctrl'
-import {newState} from '../../src/store'
+import {createCtrl} from '../../src/components/Editor/store/actions'
+import {newState} from '../../src/components/Editor/store/context'
 
 const lastModified = new Date()
 

@@ -4,7 +4,7 @@ import { wrappingInputRule } from 'prosemirror-inputrules'
 import { splitListItem } from 'prosemirror-schema-list'
 import { keymap } from 'prosemirror-keymap'
 import { inputRules } from 'prosemirror-inputrules'
-import { ProseMirrorExtension } from '../state'
+import { ProseMirrorExtension } from '../helpers'
 
 const todoListRule = (nodeType: NodeType) =>
   wrappingInputRule(new RegExp('^\\[( |x)]\\s$'), nodeType, (match) => ({

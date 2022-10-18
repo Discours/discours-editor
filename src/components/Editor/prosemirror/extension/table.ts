@@ -2,7 +2,7 @@ import { EditorState, Selection } from 'prosemirror-state'
 import { Node, Schema, ResolvedPos } from 'prosemirror-model'
 import { InputRule, inputRules } from 'prosemirror-inputrules'
 import { keymap } from 'prosemirror-keymap'
-import { ProseMirrorExtension } from '../state'
+import { ProseMirrorExtension } from '../helpers'
 
 export const tableInputRule = (schema: Schema) =>
   new InputRule(

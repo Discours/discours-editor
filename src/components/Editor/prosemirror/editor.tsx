@@ -3,7 +3,7 @@ import { Store, unwrap } from 'solid-js/store'
 import { EditorState, Transaction } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { Schema } from 'prosemirror-model'
-import { NodeViewFn, ProseMirrorExtension, ProseMirrorState } from './state'
+import { NodeViewFn, ProseMirrorExtension, ProseMirrorState } from './helpers'
 
 interface Props {
   style?: string;
@@ -28,35 +28,35 @@ export const ProseMirror = (props: Props) => {
     props.onChange(newState)
   }
 
-  createEffect(
-    ([prevText, prevExtensions]) => {
-      const text: EditorState = unwrap(props.text)
-      const extensions: ProseMirrorExtension[] = unwrap(props.extensions)
-      if (!text || !extensions?.length) {
-        return [text, extensions]
-      }
-
-      if (!props.editorView) {
-        const { editorState, nodeViews } = createEditorState(text, extensions)
-        const view = new EditorView(editorRef, { state: editorState, nodeViews, dispatchTransaction })
-        view.focus()
-        props.onInit(editorState, view)
-        return [editorState, extensions]
-      }
-
-      if (extensions !== prevExtensions || (!(text instanceof EditorState) && text !== prevText)) {
-        const { editorState, nodeViews } = createEditorState(text, extensions, prevText)
-        if (!editorState) return
-        editorView().updateState(editorState)
-        editorView().setProps({ nodeViews, dispatchTransaction })
-        props.onReconfigure(editorState)
-        editorView().focus()
-        return [editorState, extensions]
-      }
-
+  createEffect((payload: [EditorState, ProseMirrorExtension[]]) => {
+    const [prevText, prevExtensions] = payload
+    const text: EditorState = unwrap(props.text)
+    const extensions: ProseMirrorExtension[] = unwrap(props.extensions)
+    if (!text || !extensions?.length) {
       return [text, extensions]
-    },
-    [props.text, props.extensions]
+    }
+
+    if (!props.editorView) {
+      const { editorState, nodeViews } = createEditorState(text, extensions)
+      const view = new EditorView(editorRef, { state: editorState, nodeViews, dispatchTransaction })
+      view.focus()
+      props.onInit(editorState, view)
+      return [editorState, extensions]
+    }
+
+    if (extensions !== prevExtensions || (!(text instanceof EditorState) && text !== prevText)) {
+      const { editorState, nodeViews } = createEditorState(text, extensions, prevText)
+      if (!editorState) return
+      editorView().updateState(editorState)
+      editorView().setProps({ nodeViews, dispatchTransaction })
+      props.onReconfigure(editorState)
+      editorView().focus()
+      return [editorState, extensions]
+    }
+
+    return [text, extensions]
+  },
+  [props.text, props.extensions]
   )
 
   return (

@@ -1,12 +1,12 @@
 import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import { unwrap } from 'solid-js/store'
 import { undo, redo } from 'prosemirror-history'
-import { File, useState /*, Config, PrettierConfig */ } from '../store'
-import { isTauri, isMac, alt, mod, WEB_URL /*, VERSION_URL*/ } from '../env'
+import { File, useState /*, Config, PrettierConfig */ } from '../store/context'
+import { isTauri, isMac, alt, mod, WEB_URL /*, VERSION_URL*/ } from '../../../env'
 import * as remote from '../remote'
-import { isEmpty /*, isInitialized*/ } from '../prosemirror/state'
+import { isEmpty /*, isInitialized*/ } from '../prosemirror/helpers'
 import { Styled } from './Layout'
-import './Sidebar.scss'
+import '../styles/Sidebar.scss'
 
 const Off = ({ children }: Styled) => <div class='sidebar-off'>{children}</div>
 
@@ -172,7 +172,6 @@ export default () => {
               <input type='checkbox' name='theme' id='theme' onClick={toggleTheme} />
               <label for='theme'>Ночная тема</label>
             </div>
-            {/*
             <Show when={isTauri && !store.path}>
               <Link onClick={onSaveAs}>
                 Save to file <Keys keys={[mod, 's']} />
@@ -210,15 +209,12 @@ export default () => {
               Markdown mode {store.markdown && '✅'} <Keys keys={[mod, 'm']} />
             </Link>
             <Link onClick={onCopyAllAsMd}>Copy all as MD {lastAction() === 'copy-md' && '📋'}</Link>
-            */}
             <Show when={store.files.length > 0}>
               <h4>Files:</h4>
               <p>
                 <For each={store.files}>{(file) => <FileLink file={file} />}</For>
               </p>
             </Show>
-
-            {/*
             <Link onClick={onCollab} title={store.collab?.error ? 'Connection error' : ''}>
               Collab {collabText()}
             </Link>
@@ -235,7 +231,6 @@ export default () => {
                 {collabUsers()} {collabUsers() === 1 ? 'user' : 'users'} connected
               </span>
             </Show>
-            */}
             <Show when={isTauri}>
               <Link onClick={() => remote.quit()}>
                 Quit <Keys keys={[mod, 'q']} />

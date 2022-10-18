@@ -10,11 +10,11 @@ import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generato
 import { debounce } from 'ts-debounce'
 import * as remote from '../remote'
 import { createSchema, createExtensions, createEmptyText } from '../prosemirror/setup'
-import { State, File, Config, ServiceError, newState } from '.'
-import { isTauri, mod } from '../env'
+import { State, File, Config, ServiceError, newState } from './context'
+import { isTauri, mod } from '../../../env'
 import { serialize, createMarkdownParser } from '../markdown'
 import db from '../db'
-import { isEmpty, isInitialized } from '../prosemirror/state'
+import { isEmpty, isInitialized } from '../prosemirror/helpers'
 import { Awareness } from 'y-protocols/awareness'
 
 const isText = (x: any) => x && x.doc && x.selection

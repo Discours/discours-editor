@@ -1,8 +1,8 @@
 import { EditorView } from 'prosemirror-view'
 import { EditorState } from 'prosemirror-state'
-import { useState } from '../store'
+import { useState } from '../store/context'
 import { ProseMirror } from '../prosemirror/editor'
-import './Editor.scss'
+import '../styles/Editor.scss'
 
 export default () => {
   const [store, ctrl] = useState()

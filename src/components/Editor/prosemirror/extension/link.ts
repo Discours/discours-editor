@@ -1,7 +1,7 @@
 import { Plugin, PluginKey, TextSelection, Transaction } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 import { Mark, Node, Schema } from 'prosemirror-model'
-import { ProseMirrorExtension } from '../state'
+import { ProseMirrorExtension } from '../helpers'
 
 const REGEX = /(^|\s)\[(.+)\]\(([^ ]+)(?: "(.+)")?\)/
 

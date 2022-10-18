@@ -4,9 +4,9 @@ import * as clipboard from '@tauri-apps/api/clipboard'
 import * as fs from '@tauri-apps/api/fs'
 import * as dialog from '@tauri-apps/api/dialog'
 import { EditorState } from 'prosemirror-state'
-import { Args } from './store'
+import { Args } from './store/context'
 import { serialize } from './markdown'
-import { isTauri } from './env'
+import { isTauri } from '../../env'
 
 export const getArgs = async (): Promise<Args> => {
   if (!isTauri) throw Error('Must be run in tauri')

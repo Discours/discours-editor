@@ -1,12 +1,12 @@
-import {useState} from '../store'
+import {useState} from './Editor/store/context'
 import './ArticlesList.scss'
 
 export default () => {
-  const [store, ctrl] = useState()
+  const [store, ] = useState()
   // const editorCss = (config) => css``
   const style = () => store.error ? `display: none;` : store.markdown ? `white-space: pre-wrap;` : ''
   return (
-    <div class='articles-list'>
+    <div class='articles-list' style={style()}>
       <div class='articles-list__item article row'>
         <div class='col-md-6'>
           <div class='article__status article__status--draft'>Черновик</div>

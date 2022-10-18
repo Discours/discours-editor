@@ -10,8 +10,7 @@ export const isMac =
 export const mod = isMac ? 'Cmd' : 'Ctrl'
 export const alt = isMac ? 'Cmd' : 'Alt'
 
-export const WEB_URL =
-  //'http://localhost:3000'
-  'https://discoursio-editor-app.vercel.app'
+export const WEB_URL = 'http://localhost:3000'
+//' https://discoursio-editor-app.vercel.app'
 
 export const VERSION_URL = `https://github.com/Discours/discours-editor-app/releases/tag/v${tauriConf?.package.version}`

@@ -1,6 +1,6 @@
 import { Switch, Match } from 'solid-js'
-import { useState } from '../store'
-import './Button.scss'
+import { useState } from '../store/context'
+import '../styles/Button.scss'
 
 export default () => {
   const [store] = useState()

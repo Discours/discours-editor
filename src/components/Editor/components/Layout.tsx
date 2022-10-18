@@ -1,5 +1,5 @@
-import { Config } from '../store'
-import './Layout.scss'
+import { Config } from '../store/context'
+import '../styles/Layout.scss'
 
 export type Styled = {
   children: any;

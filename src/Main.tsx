@@ -2,18 +2,16 @@ import { Show, onCleanup, createEffect, onError, onMount, untrack } from 'solid-
 import { createMutable, unwrap } from 'solid-js/store'
 import { listen } from '@tauri-apps/api/event'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
-import { insertImage } from './prosemirror/extension/image'
+import { insertImage } from './components/Editor/prosemirror/extension/image'
 import { isTauri } from './env'
-import { State, StateContext } from './store'
-import { createCtrl } from './store/ctrl'
-import * as remote from './remote'
-import { Layout } from './components/Layout'
-import Editor from './components/Editor'
-import Sidebar from './components/Sidebar'
-import ErrorView from './components/Error'
-import Index from './components/Index'
-// import Newnode from './lib/newnode'
-import './app.scss'
+import { State, StateContext } from './components/Editor/store/context'
+import { createCtrl } from './components/Editor/store/actions'
+import * as remote from './components/Editor/remote'
+import { Layout } from './components/Editor/components/Layout'
+import Editor from './components/Editor/components/Editor'
+import Sidebar from './components/Editor/components/Sidebar'
+import ErrorView from './components/Editor/components/Error'
+import './styles/app.scss'
 
 export default (props: { state: State }) => {
   const [store, ctrl] = createCtrl(props.state)
@@ -90,7 +88,6 @@ export default (props: { state: State }) => {
           <ErrorView />
         </Show>
         <Show when={store.loading === 'initialized'}>
-          <Index/>
           <Show when={!store.error}>
             <Editor />
           </Show>

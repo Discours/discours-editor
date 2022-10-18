@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap'
-import { ProseMirrorExtension } from './state'
+import { ProseMirrorExtension } from './helpers'
 import { Schema } from 'prosemirror-model'
 import base from './extension/base'
 import markdown from './extension/markdown'
@@ -15,7 +15,7 @@ import dragHandle from './extension/drag-handle'
 import pasteMarkdown from './extension/paste-markdown'
 import table from './extension/table'
 import collab from './extension/collab'
-import { Config, YOptions } from '../store'
+import { Config, YOptions } from '../store/context'
 import selectionMenu from './extension/selection'
 
 interface Props {

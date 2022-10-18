@@ -1,6 +1,6 @@
 import { renderGrouped } from "prosemirror-menu";
 import { Plugin } from "prosemirror-state";
-import { ProseMirrorExtension } from "../state";
+import { ProseMirrorExtension } from "../helpers";
 import { buildMenuItems } from "./menu";
 
 export class SelectionTooltip {
