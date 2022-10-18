@@ -4,9 +4,6 @@
   "description": "Collaborative p2p publishing tool",
   "main": "dist/index.js",
   "scripts": {
-    "desktop": "npm run tauri",
-    "ios": "npx cap open ios",
-    "android": "npx cap open android",
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
@@ -20,13 +17,12 @@
     "test:unit:client": "TEST_ENV=client TEST_MODE=client vitest run",
     "test:unit:client-server": "TEST_ENV=client TEST_MODE=client-server vitest run",
     "test:unit:server": "TEST_ENV=server TEST_MODE=server vitest run",
-    "test:e2e": "CI=true vitest && npx playwright test",
-    "tauri": "tauri"
+    "test:e2e": "CI=true vitest && npx playwright test"
   },
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.20.1",
     "@popperjs/core": "^2.11.2",
-    "@tauri-apps/cli": "^1.0.0-rc.7",
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
@@ -78,14 +74,5 @@
     "y-protocols": "^1.0.5",
     "y-webrtc": "^10.2.2",
     "yjs": "^13.5.28"
-  },
-  "dependencies": {
-    "@capacitor/android": "^3.4.1",
-    "@capacitor/app": "^1.1.1",
-    "@capacitor/cli": "^3.4.3",
-    "@capacitor/core": "^3.4.3",
-    "@capacitor/ios": "^3.4.1",
-    "@playwright/test": "^1.20.1",
-    "@tauri-apps/api": "^1.0.0-rc.2"
   }
 }

@@ -1,9 +1,6 @@
 import { Plugin } from 'prosemirror-state'
 import { Node, Schema } from 'prosemirror-model'
 import { EditorView } from 'prosemirror-view'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
-import { resolvePath, dirname } from '../../remote'
-import { isTauri } from '../../env'
 import { ProseMirrorExtension } from '../helpers'
 
 const REGEX = /^!\[([^[\]]*?)\]\((.+?)\)\s+/
@@ -19,13 +16,6 @@ const isUrl = (str: string) => {
 }
 
 const isBlank = (text: string) => text === ' ' || text === '\xa0'
-
-export const getImagePath = async (src: string, path?: string) => {
-  let paths = [src]
-  if (path) paths = [await dirname(path), src]
-  const absolutePath = await resolvePath(paths)
-  return convertFileSrc(absolutePath)
-}
 
 const imageInput = (schema: Schema, path?: string) =>
   new Plugin({
@@ -54,17 +44,6 @@ const imageInput = (schema: Schema, path?: string) =>
             view.dispatch(tr)
             return true
           }
-
-          if (!isTauri) return false
-
-          getImagePath(src, path).then((p) => {
-            const node = schema.node('image', { src: p, title, path: src })
-            const start = from - (match[0].length - text.length)
-            const tr = view.state.tr
-            tr.delete(start, to)
-            tr.insert(start, node)
-            view.dispatch(tr)
-          })
 
           return false
         }
@@ -142,19 +121,7 @@ class ImageView {
 
     const image = document.createElement('img')
     image.setAttribute('title', node.attrs.title ?? '')
-
-    if (
-      isTauri &&
-      !node.attrs.src.startsWith('asset:') &&
-      !node.attrs.src.startsWith('data:') &&
-      !isUrl(node.attrs.src)
-    ) {
-      getImagePath(node.attrs.src, path).then((p) => {
-        image.setAttribute('src', p)
-      })
-    } else {
-      image.setAttribute('src', node.attrs.src)
-    }
+    image.setAttribute('src', node.attrs.src)
 
     this.handle = document.createElement('span')
     this.handle.className = 'resize-handle'

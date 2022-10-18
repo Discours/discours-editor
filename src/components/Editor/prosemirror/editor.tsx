@@ -65,7 +65,6 @@ export const ProseMirror = (props: Props) => {
       ref={editorRef}
       className={props.className}
       spell-check={false}
-      data-tauri-drag-region='true'
     />
   )
 }

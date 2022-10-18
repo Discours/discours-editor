@@ -7,11 +7,10 @@ import * as Y from 'yjs'
 import { undo as yUndo, redo as yRedo } from 'y-prosemirror'
 import { WebrtcProvider } from 'y-webrtc'
 import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator'
-import { debounce } from 'ts-debounce'
-import * as remote from '../remote'
+import { debounce } from 'lodash'
 import { createSchema, createExtensions, createEmptyText } from '../prosemirror/setup'
 import { State, File, Config, ServiceError, newState } from './context'
-import { isTauri, mod } from '../env'
+import { mod } from '../env'
 import { serialize, createMarkdownParser } from '../markdown'
 import db from '../db'
 import { isEmpty, isInitialized } from '../prosemirror/helpers'
@@ -24,24 +23,8 @@ const isFile = (x: any): boolean => x && (x.text || x.path)
 export const createCtrl = (initial: State): [Store<State>, any] => {
   const [store, setState] = createStore(initial)
 
-  const onQuit = () => {
-    if (!isTauri) return
-    remote.quit()
-  }
-
-  const onNew = () => {
-    newFile()
-    return true
-  }
-
   const onDiscard = () => {
     discard()
-    return true
-  }
-
-  const onFullscreen = () => {
-    if (!isTauri) return
-    ctrl.setFullscreen(!store.fullscreen)
     return true
   }
 
@@ -72,11 +55,7 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
   }
 
   const keymap = {
-    [`${mod}-q`]: onQuit,
-    [`${mod}-n`]: onNew,
     [`${mod}-w`]: onDiscard,
-    'Cmd-Enter': onFullscreen,
-    'Alt-Enter': onFullscreen,
     [`${mod}-z`]: onUndo,
     [`Shift-${mod}-z`]: onRedo,
     [`${mod}-y`]: onRedo,
@@ -85,9 +64,6 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
 
   const createTextFromFile = async (file: File) => {
     const state = unwrap(store)
-    if (file.path) {
-      file = await loadFile(state.config, file.path)
-    }
 
     const extensions = createExtensions({
       config: state.config,
@@ -153,14 +129,9 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
   }
 
   const fetchData = async (): Promise<State> => {
-    let args = await remote.getArgs().catch(() => undefined)
     const state: State = unwrap(store)
-
-    if (!isTauri) {
-      const room = window.location.pathname?.slice(1).trim()
-      args = { room: room ? room : undefined }
-    }
-
+    const room = window.location.pathname?.slice(1).trim()
+    const args = { room: room ? room : undefined }
     const data = await db.get('state')
     let parsed: any
     if (data !== undefined) {
@@ -246,14 +217,6 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     try {
       if (data.args.room) {
         data = doStartCollab(data)
-      } else if (data.args.text) {
-        data = await doOpenFile(data, { text: JSON.parse(data.args.text) })
-      } else if (data.args.file) {
-        const file = await loadFile(data.config, data.args.file)
-        data = await doOpenFile(data, file)
-      } else if (data.path) {
-        const file = await loadFile(data.config, data.path)
-        data = await doOpenFile(data, file)
       } else if (!data.text) {
         const text = createEmptyText()
         const extensions = createExtensions({
@@ -274,103 +237,7 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     })
   }
 
-  const loadFile = async (config: Config, path: string): Promise<File> => {
-    try {
-      const fileContent = await remote.readFile(path)
-      const lastModified = await remote.getFileLastModified(path)
-      const schema = createSchema({
-        config,
-        markdown: false,
-        path,
-        keymap
-      })
-
-      const parser = createMarkdownParser(schema)
-      const doc = parser.parse(fileContent).toJSON()
-      const text = {
-        doc,
-        selection: {
-          type: 'text',
-          anchor: 1,
-          head: 1
-        }
-      }
-
-      return {
-        text,
-        lastModified: lastModified.toISOString(),
-        path: path
-      }
-    } catch (e) {
-      throw new ServiceError('file_permission_denied', { error: e })
-    }
-  }
-
-  const newFile = () => {
-    if (isEmpty(store.text) && !store.path) {
-      return
-    }
-
-    const state: State = unwrap(store)
-    let files = state.files
-    if (!state.error) {
-      files = addToFiles(files, state)
-    }
-
-    const extensions = createExtensions({
-      config: state.config ?? store.config,
-      markdown: state.markdown ?? store.markdown,
-      keymap
-    })
-
-    setState({
-      text: createEmptyText(),
-      extensions,
-      files,
-      lastModified: undefined,
-      path: undefined,
-      error: undefined,
-      collab: undefined
-    })
-  }
-
-  const openFile = async (file: File) => {
-    const state: State = unwrap(store)
-    const update = await doOpenFile(state, file)
-    setState(update)
-  }
-
-  const doOpenFile = async (state: State, file: File): Promise<State> => {
-    const findIndexOfFile = (f: File) => {
-      for (let i = 0; i < state.files.length; i++) {
-        if (state.files[i] === f) return i
-        else if (f.path && state.files[i].path === f.path) return i
-      }
-
-      return -1
-    }
-
-    const index = findIndexOfFile(file)
-    const item = index === -1 ? file : state.files[index]
-    let files = state.files.filter((f) => f !== item)
-
-    if (!isEmpty(state.text) && state.lastModified) {
-      files = addToFiles(files, state)
-    }
-
-    file.lastModified = item.lastModified
-    const next = await createTextFromFile(file)
-
-    return {
-      ...state,
-      ...next,
-      files,
-      collab: undefined,
-      error: undefined
-    }
-  }
-
-  const saveState = debounce(async (state: State) => {
+  const saveState = () => debounce(async (state: State) => {
     const data: any = {
       lastModified: state.lastModified,
       files: state.files,
@@ -383,12 +250,7 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     }
 
     if (isInitialized(state.text)) {
-      if (state.path) {
-        const text = serialize(store.editorView.state)
-        await remote.writeFile(state.path, text)
-      } else {
-        data.text = store.editorView.state.toJSON()
-      }
+      data.text = store.editorView.state.toJSON()
     } else if (state.text) {
       data.text = state.text
     }
@@ -397,7 +259,6 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
   }, 200)
 
   const setFullscreen = (fullscreen: boolean) => {
-    remote.setFullscreen(fullscreen)
     setState({ fullscreen })
   }
 
@@ -561,9 +422,6 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     discard,
     getTheme,
     init,
-    loadFile,
-    newFile,
-    openFile,
     saveState,
     setFullscreen,
     setState,

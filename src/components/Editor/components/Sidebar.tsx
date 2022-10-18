@@ -2,7 +2,7 @@ import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import { unwrap } from 'solid-js/store'
 import { undo, redo } from 'prosemirror-history'
 import { File, useState /*, Config, PrettierConfig */ } from '../store/context'
-import { isTauri, isMac, alt, mod, WEB_URL /*, VERSION_URL*/ } from '../env'
+import { isMac, alt, mod, WEB_URL /*, VERSION_URL*/ } from '../env'
 import * as remote from '../remote'
 import { isEmpty /*, isInitialized*/ } from '../prosemirror/helpers'
 import { Styled } from './Layout'
@@ -42,8 +42,6 @@ export default () => {
   const onUndo = () => undo(editorView().state, editorView().dispatch)
   const onRedo = () => redo(editorView().state, editorView().dispatch)
   const onCopyAllAsMd = () => remote.copyAllAsMarkdown(editorView().state).then(() => setLastAction('copy-md'))
-  const onToggleAlwaysOnTop = () => ctrl.updateConfig({ alwaysOnTop: !store.config.alwaysOnTop })
-  const onToggleFullscreen = () => ctrl.setFullscreen(!store.fullscreen)
   const onNew = () => ctrl.newFile()
   const onDiscard = () => ctrl.discard()
   const [isHidden, setIsHidden] = createSignal<boolean | false>()
@@ -54,24 +52,9 @@ export default () => {
 
   toggleSidebar();
 
-  const onSaveAs = async () => {
-    const path = await remote.save(editorView().state)
-    if (path) ctrl.updatePath(path)
-  }
-
   const onCollab = () => {
     const state = unwrap(store)
     store.collab?.started ? ctrl.stopCollab(state) : ctrl.startCollab(state)
-  }
-
-  const onOpenInApp = () => {
-    if (isTauri) return
-    if (store.collab?.started) {
-      window.open(`discoursio://main?room=${store.collab?.room}`, '_self')
-    } else {
-      const text = window.btoa(JSON.stringify(editorView().state.toJSON()))
-      window.open(`discoursio://main?text=${text}`, '_self')
-    }
   }
 
   const onCopyCollabLink = () => {
@@ -148,7 +131,7 @@ export default () => {
     <div className={'sidebar-container' + (isHidden() ? ' sidebar-container--hidden' : '')}>
       <span className='sidebar-opener' onClick={toggleSidebar}>Советы и&nbsp;предложения</span>
 
-      <Off onClick={() => editorView().focus()} data-tauri-drag-region='true'>
+      <Off onClick={() => editorView().focus()}>
         <div className='sidebar-closer' onClick={toggleSidebar}/>
         <Show when={true}>
           <div>
@@ -172,14 +155,6 @@ export default () => {
               <input type='checkbox' name='theme' id='theme' onClick={toggleTheme} />
               <label for='theme'>Ночная тема</label>
             </div>
-            <Show when={isTauri && !store.path}>
-              <Link onClick={onSaveAs}>
-                Save to file <Keys keys={[mod, 's']} />
-              </Link>
-            </Show>
-            <Link onClick={onNew} data-testid='new'>
-              New <Keys keys={[mod, 'n']} />
-            </Link>
             <Link
               onClick={onDiscard}
               disabled={!store.path && store.files.length === 0 && isEmpty(store.text)}
@@ -188,29 +163,18 @@ export default () => {
               {store.path ? 'Close' : store.files.length > 0 && isEmpty(store.text) ? 'Delete ⚠️' : 'Clear'}{' '}
               <Keys keys={[mod, 'w']} />
             </Link>
-            <Show when={isTauri}>
-              <Link onClick={onToggleFullscreen}>
-                Fullscreen {store.fullscreen && '✅'} <Keys keys={[alt, 'Enter']} />
-              </Link>
-            </Show>
             <Link onClick={onUndo}>
               Undo <Keys keys={[mod, 'z']} />
             </Link>
             <Link onClick={onRedo}>
               Redo <Keys keys={[mod, ...(isMac ? ['Shift', 'z'] : ['y'])]} />
             </Link>
-            <Show when={isTauri}>
-              <Link onClick={onToggleAlwaysOnTop}>Always on Top {store.config.alwaysOnTop && '✅'}</Link>
-            </Show>
-            <Show when={!isTauri && false}>
-              <Link onClick={onOpenInApp}>Open in App ⚡</Link>
-            </Show>
             <Link onClick={onToggleMarkdown} data-testid='markdown'>
               Markdown mode {store.markdown && '✅'} <Keys keys={[mod, 'm']} />
             </Link>
             <Link onClick={onCopyAllAsMd}>Copy all as MD {lastAction() === 'copy-md' && '📋'}</Link>
             <Show when={store.files.length > 0}>
-              <h4>Files:</h4>
+              <h4>Drafts:</h4>
               <p>
                 <For each={store.files}>{(file) => <FileLink file={file} />}</For>
               </p>
@@ -230,11 +194,6 @@ export default () => {
               <span>
                 {collabUsers()} {collabUsers() === 1 ? 'user' : 'users'} connected
               </span>
-            </Show>
-            <Show when={isTauri}>
-              <Link onClick={() => remote.quit()}>
-                Quit <Keys keys={[mod, 'q']} />
-              </Link>
             </Show>
           </div>
         </Show>
