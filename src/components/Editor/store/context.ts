@@ -3,7 +3,7 @@ import { Store } from 'solid-js/store'
 import { XmlFragment } from 'yjs'
 import { WebrtcProvider } from 'y-webrtc'
 import { ProseMirrorExtension, ProseMirrorState } from '../prosemirror/helpers'
-import { isMac } from '../../../env'
+import { isMac } from '../env'
 
 export interface Args {
   cwd?: string;

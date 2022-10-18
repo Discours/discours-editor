@@ -1,5 +1,5 @@
 import { render } from 'solid-js/web'
-import Main from './Main'
+import Editor from './components/Editor/components/Editor'
 import { newState } from './components/Editor/store/context'
 
-render(() => <Main state={newState()} />, document.getElementById('container'))
+render(() => <Editor state={newState()} />, document.getElementById('container'))

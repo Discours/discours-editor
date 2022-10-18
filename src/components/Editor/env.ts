@@ -1,4 +1,4 @@
-import tauriConf from '../src-tauri/tauri.conf.json'
+import tauriConf from '../../../src-tauri/tauri.conf.json'
 
 export const isTauri = (window as any).__TAURI__ !== undefined
 
