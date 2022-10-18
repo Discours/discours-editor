@@ -1,5 +1,5 @@
 import { render } from 'solid-js/web'
-import Editor from './components/Editor/components/Editor'
+import { CreateView } from './components/CreateView'
 import { newState } from './components/Editor/store/context'
 
-render(() => <Editor state={newState()} />, document.getElementById('container'))
+render(() => <CreateView state={newState()} />, document.getElementById('container'))
