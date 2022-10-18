@@ -1,6 +1,6 @@
 {
   "name": "discours-editor-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Collaborative p2p publishing tool",
   "main": "dist/index.js",
   "scripts": {
