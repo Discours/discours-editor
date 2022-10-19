@@ -27,7 +27,7 @@ const Link = (
   </button>
 )
 
-export default () => {
+export const Sidebar = () => {
   const [store, ctrl] = useState()
   const [lastAction, setLastAction] = createSignal<string | undefined>()
   const toggleTheme = () => {

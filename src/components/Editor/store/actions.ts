@@ -216,7 +216,7 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     let data = await fetchData()
     try {
       if (data.args.room) {
-        data = doStartCollab(data)
+        data = await doStartCollab(data)
       } else if (!data.text) {
         const text = createEmptyText()
         const extensions = createExtensions({
@@ -262,43 +262,19 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     setState({ fullscreen })
   }
 
-  const startCollab = () => {
+  const startCollab = async () => {
     const state: State = unwrap(store)
-    const update = doStartCollab(state)
+    const update = await doStartCollab(state)
     setState(update)
   }
 
-  const doStartCollab = (state: State): State => {
+  const doStartCollab = async (state: State): Promise<State> => {
     const backup = state.args?.room && state.collab?.room !== state.args.room
     const room = state.args?.room ?? uuidv4()
     window.history.replaceState(null, '', `/${room}`)
 
-    const ydoc = new Y.Doc()
-    const type = ydoc.getXmlFragment('prosemirror')
-    const webrtcOptions = {
-      awareness: new Awareness(ydoc),
-      filterBcConns: true,
-      maxConns: 33,
-      signaling: [
-        // 'wss://signaling.discours.io',
-        // 'wss://stun.l.google.com:19302',
-        'wss://y-webrtc-signaling-eu.herokuapp.com',
-        'wss://signaling.yjs.dev'
-      ],
-      peerOpts: {},
-      password: ''
-    }
-    const provider = new WebrtcProvider(room, ydoc, webrtcOptions)
-    const username = uniqueNamesGenerator({
-      dictionaries: [adjectives, animals],
-      style: 'capital',
-      separator: ' ',
-      length: 2
-    })
-
-    provider.awareness.setLocalStateField('user', {
-      name: username
-    })
+    const { roomConnect } = await import('../prosemirror/p2p')
+    const [type, provider] = roomConnect(room)
 
     const extensions = createExtensions({
       config: state.config,

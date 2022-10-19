@@ -4,7 +4,7 @@ import { State, StateContext } from './Editor/store/context'
 import { createCtrl } from './Editor/store/actions'
 import { Layout } from './Editor/components/Layout'
 import { Editor } from './Editor/components/Editor'
-import Sidebar from './Editor/components/Sidebar'
+import { Sidebar } from './Editor/components/Sidebar'
 import ErrorView from './Editor/components/Error'
 import '../styles/app.scss'
 
