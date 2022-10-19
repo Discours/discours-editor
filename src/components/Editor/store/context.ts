@@ -3,7 +3,6 @@ import { Store } from 'solid-js/store'
 import { XmlFragment } from 'yjs'
 import { WebrtcProvider } from 'y-webrtc'
 import { ProseMirrorExtension, ProseMirrorState } from '../prosemirror/helpers'
-import { isMac } from '../env'
 
 export interface Args {
   cwd?: string;
@@ -26,8 +25,7 @@ export interface Config {
   font: string;
   fontSize: number;
   contentWidth: number;
-  alwaysOnTop: boolean;
-  // typewriterMode: boolean;
+  typewriterMode: boolean;
   prettier: PrettierConfig;
 }
 
@@ -97,8 +95,7 @@ export const newState = (props: Partial<State> = {}): State => ({
     font: 'muller',
     fontSize: 24,
     contentWidth: 800,
-    alwaysOnTop: isMac,
-    // typewriterMode: true,
+    typewriterMode: true,
     prettier: {
       printWidth: 80,
       tabWidth: 2,

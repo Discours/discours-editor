@@ -1,10 +1,10 @@
 import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import { unwrap } from 'solid-js/store'
 import { undo, redo } from 'prosemirror-history'
-import { File, useState /*, Config, PrettierConfig */ } from '../store/context'
-import { isMac, alt, mod, WEB_URL /*, VERSION_URL*/ } from '../env'
+import { File, useState } from '../store/context'
+import { mod } from '../env'
 import * as remote from '../remote'
-import { isEmpty /*, isInitialized*/ } from '../prosemirror/helpers'
+import { isEmpty } from '../prosemirror/helpers'
 import { Styled } from './Layout'
 import '../styles/Sidebar.scss'
 
@@ -42,7 +42,6 @@ export const Sidebar = () => {
   const onUndo = () => undo(editorView().state, editorView().dispatch)
   const onRedo = () => redo(editorView().state, editorView().dispatch)
   const onCopyAllAsMd = () => remote.copyAllAsMarkdown(editorView().state).then(() => setLastAction('copy-md'))
-  const onNew = () => ctrl.newFile()
   const onDiscard = () => ctrl.discard()
   const [isHidden, setIsHidden] = createSignal<boolean | false>()
 
@@ -55,20 +54,6 @@ export const Sidebar = () => {
   const onCollab = () => {
     const state = unwrap(store)
     store.collab?.started ? ctrl.stopCollab(state) : ctrl.startCollab(state)
-  }
-
-  const onCopyCollabLink = () => {
-    remote.copy(`${WEB_URL}/${store.collab?.room}`).then(() => {
-      editorView().focus()
-      setLastAction('copy-collab-link')
-    })
-  }
-
-  const onCopyCollabAppLink = () => {
-    remote.copy(`discoursio://${store.collab?.room}`).then(() => {
-      editorView().focus()
-      setLastAction('copy-collab-app-link')
-    })
   }
 
   const FileLink = (p: { file: File }) => {
@@ -167,7 +152,7 @@ export const Sidebar = () => {
               Undo <Keys keys={[mod, 'z']} />
             </Link>
             <Link onClick={onRedo}>
-              Redo <Keys keys={[mod, ...(isMac ? ['Shift', 'z'] : ['y'])]} />
+              Redo <Keys keys={[mod, ...['Shift', 'z']]} />
             </Link>
             <Link onClick={onToggleMarkdown} data-testid='markdown'>
               Markdown mode {store.markdown && '✅'} <Keys keys={[mod, 'm']} />
@@ -183,14 +168,6 @@ export const Sidebar = () => {
               Collab {collabText()}
             </Link>
             <Show when={collabUsers() > 0}>
-              <Link onClick={onCopyCollabLink}>
-                Copy Link {lastAction() === 'copy-collab-link' && '📋'}
-              </Link>
-              <Show when={false}>
-                <Link onClick={onCopyCollabAppLink}>
-                  Copy App Link {lastAction() === 'copy-collab-app-link' && '📋'}
-                </Link>
-              </Show>
               <span>
                 {collabUsers()} {collabUsers() === 1 ? 'user' : 'users'} connected
               </span>
